@@ -11,6 +11,8 @@ from .. import db
 from sqlalchemy import and_
 import sys
 import uuid
+import os
+
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -74,7 +76,9 @@ def flask_upload():
             # try:
             print repr(chaptername)
             print repr(file.filename)
-            filename = photos.save(file,'H:/pythonleo/yahaha/app/static/' + uploadurl + '/' + mhname + '/' + chaptername + '/')
+
+            cwd = os.getcwd()
+            filename = photos.save(file,cwd + '/app/static/' + uploadurl + '/' + mhname + '/' + chaptername + '/')
             mhurl.append(mhname + '/' + chaptername + '/' + file.filename )
             return jsonify({'code': 0, 'filename': filename, 'msg': photos.url(filename)})
             # except Exception as e:
@@ -106,7 +110,8 @@ def uploadtempImage():
             return jsonify({'code': -1, 'filename': '', 'msg': 'No selected file'})
         else:
             # try:
-            filename = photos.save(file,'H:/pythonleo/yahaha/app/static/' + uploadurl + '/' + mhname + '/' + chaptername + '/')
+            cwd = os.getcwd()
+            filename = photos.save(file,cwd + '/app/static/' + uploadurl + '/' + mhname + '/' + chaptername + '/')
             return jsonify({'code': 0, 'filename': mhname + '/' + chaptername + '/' + file.filename, 'msg': photos.url(filename)})
     else:
         return jsonify({'code': -1, 'filename': '', 'msg': 'Method not allowed'})
