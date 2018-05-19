@@ -48,9 +48,11 @@ class Manhua(db.Model):
     id = db.Column(db.VARCHAR(36), primary_key=True)
     mhname = db.Column(db.String(64), unique=True)
     pic_url = db.Column(db.String(128), unique=True)
+    creat_time = db.Column(db.DATETIME)
+    updata_time = db.Column(db.DATETIME)
+    pic_base64data = db.Column(db.Text())
 
     #users = db.relationship('User', backref='role', lazy='dynamic')
-
     def __repr__(self):
         return '<Manhua %r>' % self.mhname
 
@@ -62,10 +64,11 @@ class Chapter(db.Model):
     chapter_nums = db.Column(db.Integer)
     pics_nums = db.Column(db.Integer)
     chapter_name = db.Column(db.String(64))
+    creat_time = db.Column(db.DATETIME)
+    updata_time = db.Column(db.DATETIME)
 
     db.UniqueConstraint(mhname_id,chapter_name)
     #users = db.relationship('User', backref='role', lazy='dynamic')
-
     def __repr__(self):
         return '<mhchapter %r>' % self.chapter_name
 
