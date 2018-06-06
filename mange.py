@@ -51,6 +51,8 @@ class Manhua(db.Model):
     creat_time = db.Column(db.DATETIME)
     updata_time = db.Column(db.DATETIME)
     pic_base64data = db.Column(db.Text())
+    last_updata = db.Column(db.DATETIME)
+    last_updata_chaptername = db.Column(db.String(64), unique=True)
 
     #users = db.relationship('User', backref='role', lazy='dynamic')
     def __repr__(self):
