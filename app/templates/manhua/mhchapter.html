@@ -22,13 +22,16 @@
     <div id="cartoon-book-posts" class="grid-wp">
         <div class="grid-12">
             <div class="active">
+
                 <ul class="newest">
-                    <li> <a class="post" target="_blank" title="師徒" href="/cartoon/num/3-0-n-297"> <span class="number">297</span> <span>師徒</span> </a> </li>
+                    <li> 漫画：{{ manhua.mhname }} </li>
                 </ul>
+
+
                 <ul class="c-post-list">
-                    <div class="section">
-                        <a href="javascript:;">1-100</a>
-                    </div>
+{#                    <div class="section">#}
+{#                        <a href="javascript:;">1-100</a>#}
+{#                    </div>#}
                     {% for chapter in chapters %}
                     <li> <a class="post" target="_blank" title="结束与开始" href="/manhua/addpic/{{ chapter.id }}"> <span class="number">未定</span> <span>
                         {{ chapter.chapter_name }}</span> </a> </li>

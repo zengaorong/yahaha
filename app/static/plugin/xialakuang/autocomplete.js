@@ -14,13 +14,15 @@ Author: Lorenzo Cioni - https://github.com/lorecioni
 		//Default parameters
 		params = $.extend({
 			hints: [],
-			placeholder: 'Search',
+			placeholder: '漫画名称：例如海贼王',
 			width: 200,
 			height: 16,
 			showButton: true,
-			buttonText: 'Search',
-			onSubmit: function(text){},
-			onBlur: function(){}
+			buttonText: '确定',
+			onSubmit: function(text){
+			},
+			onBlur: function(){
+			}
 		}, params);
 
 		//Build messagess

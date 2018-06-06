@@ -192,7 +192,8 @@
                 success: function (data) {
                     layer.msg('全部图片已经删除，请重新添加', {icon: 1});
 
-                    window.location.href = "../chaptercontrol/chapterfrom?id=a6feec40-4607-11e8-a320-d0577babc88a";
+                   {#chapterpicfrom?id=f0c7e9aa-5aff-11e8-860c-00163e0cf7bc&mhid=434a4e58-5afa-11e8-a742-00163e0cf7bc#}
+                    window.location.href = "../chaptercontrol/chapterfrom?id={{chapter.id}}" + "&mhid={{ chapter.mhname_id }}"  ;
                 },
                 error: function () {
                     layer.alert('上传失败')

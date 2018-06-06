@@ -22,6 +22,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <!-- start-smoth-scrolling -->
 <script type="text/javascript" src="{{url_for('static', filename='js/move-top.js')}}"></script>
 <script type="text/javascript" src="{{url_for('static', filename='js/easing.js')}}"></script>
+
+    <link rel="stylesheet" href="{{url_for('static', filename='plugin/xialakuang/autocomplete.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='plugin/xialakuang/style.css')}}">
+
+    <script type="text/javascript" src="{{url_for('static', filename='plugin/xialakuang/jquery.js')}}"> </script>
+    <script type="text/javascript" src="{{url_for('static', filename='plugin/xialakuang/autocomplete.js')}}"></script>
 <script type="text/javascript">
 			jQuery(document).ready(function($) {
 				$(".scroll").click(function(event){		
@@ -29,7 +35,24 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 					$('html,body').animate({scrollTop:$(this.hash).offset().top},1000);
 				});
 			});
-		</script>
+</script>
+
+<script type="text/javascript">
+    var proposals = [''];
+
+    $(document).ready(function(){
+        $('#search-form').autocomplete({
+            hints: proposals,
+            width: 300,
+            height: 30,
+            onSubmit: function(text){
+                {#$('#message').html('Selected: <b>' + text + '</b>');#}
+                window.location.href = "../manhua/showmhlist?mhname=" + text  ;
+            }
+        });
+    });
+</script>
+
 		<!-- start-smoth-scrolling -->
 </head>
 	<body>
@@ -68,11 +91,20 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		</div>
 		<!-- //header -->
 		<!-- banner-grids -->
+
+        <div id="demo">
+            <div class="wrapper">
+                <h3>请输入漫画名称</h3>
+                <div id="search-form"></div>
+                <div id="message"></div>
+            </div>
+        </div>
+
 		<div class="banner-grids">
 			<!-- container -->
 			<div class="container">
 				<div class="banner-grid-info">
-					<h3>Recent Visiting Places</h3>
+					<h3>最近更新</h3>
 				</div>
 				<div class="top-grids">
 
@@ -97,69 +129,69 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         <div class="copyrights">Collect from <a href="http://www.cssmoban.com/" >网页模板</a></div>
 		<!-- //banner-grids -->
 		<!-- who -->
-		<div class="who">
-			<!-- container -->
-			<div class="container">
-				<div class="who-info">
-					<h3>Who we are</h3>
-					<div class="who-grids">
-						<div class="col-md-4 who-grid">
-							<p>Vivamus risus lorem, porttitor ac mollis nec, luctus id odio. Cras porttitor odio fermentum dolor auctor, in lacinia nibh suscipit. Quisque ultricies tempus tortor. <span>Proin fermentum in nisl nec dignissim. Cras placerat, felis eget pretium malesuada, purus orci aliquam nibh, vel tempor dolor turpis quis nulla.</span></p>
-						</div>
-						<div class="col-md-4 who-grid">
-							<p>Vivamus risus lorem, porttitor ac mollis nec, luctus id odio. Cras porttitor odio fermentum dolor auctor, in lacinia nibh suscipit. Quisque ultricies tempus tortor. <span>Proin fermentum in nisl nec dignissim. Cras placerat, felis eget pretium malesuada, purus orci aliquam nibh, vel tempor dolor turpis quis nulla.</span></p>
-						</div>
-						<div class="col-md-4 who-grid">
-							<p>Vivamus risus lorem, porttitor ac mollis nec, luctus id odio. Cras porttitor odio fermentum dolor auctor, in lacinia nibh suscipit. Quisque ultricies tempus tortor. <span>Proin fermentum in nisl nec dignissim. Cras placerat, felis eget pretium malesuada, purus orci aliquam nibh, vel tempor dolor turpis quis nulla.</span></p>
-						</div>
-						<div class="clearfix"> </div>
-					</div>
-					<div class="who-button">
-						<a href="#">Read More</a>
-					</div>
-				</div>
-			</div>
-			<!-- //container -->
-		</div>
+{#		<div class="who">#}
+{#			<!-- container -->#}
+{#			<div class="container">#}
+{#				<div class="who-info">#}
+{#					<h3>Who we are</h3>#}
+{#					<div class="who-grids">#}
+{#						<div class="col-md-4 who-grid">#}
+{#							<p>Vivamus risus lorem, porttitor ac mollis nec, luctus id odio. Cras porttitor odio fermentum dolor auctor, in lacinia nibh suscipit. Quisque ultricies tempus tortor. <span>Proin fermentum in nisl nec dignissim. Cras placerat, felis eget pretium malesuada, purus orci aliquam nibh, vel tempor dolor turpis quis nulla.</span></p>#}
+{#						</div>#}
+{#						<div class="col-md-4 who-grid">#}
+{#							<p>Vivamus risus lorem, porttitor ac mollis nec, luctus id odio. Cras porttitor odio fermentum dolor auctor, in lacinia nibh suscipit. Quisque ultricies tempus tortor. <span>Proin fermentum in nisl nec dignissim. Cras placerat, felis eget pretium malesuada, purus orci aliquam nibh, vel tempor dolor turpis quis nulla.</span></p>#}
+{#						</div>#}
+{#						<div class="col-md-4 who-grid">#}
+{#							<p>Vivamus risus lorem, porttitor ac mollis nec, luctus id odio. Cras porttitor odio fermentum dolor auctor, in lacinia nibh suscipit. Quisque ultricies tempus tortor. <span>Proin fermentum in nisl nec dignissim. Cras placerat, felis eget pretium malesuada, purus orci aliquam nibh, vel tempor dolor turpis quis nulla.</span></p>#}
+{#						</div>#}
+{#						<div class="clearfix"> </div>#}
+{#					</div>#}
+{#					<div class="who-button">#}
+{#						<a href="#">Read More</a>#}
+{#					</div>#}
+{#				</div>#}
+{#			</div>#}
+{#			<!-- //container -->#}
+{#		</div>#}
 		<!-- //who -->
 		<!-- before -->
-		<div class="before">
-			<!-- container -->
-			<div class="container">
-				<h2>Brief about us</h2>
-				<div class="before-grids">
-					<div class="before-grid">
-						<h3>Why us</h3>
-						<p>Morbi id felis porttitor tellus viverra pulvinar. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices.
-							Morbi id felis porttitor tellus viverra pulvinar. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices.
-						</p>
-						<div class="who-button">
-							<a href="#">Read More</a>
-						</div>
-					</div>
-					<div class="before-grid">
-						<h3>What we do</h3>
-						<p>Morbi id felis porttitor tellus viverra pulvinar. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices.
-							Morbi id felis porttitor tellus viverra pulvinar. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices.
-						</p>
-						<div class="who-button">
-							<a href="#">Read More</a>
-						</div>
-					</div>
-					<div class="before-grid">
-						<h3>Services</h3>
-						<p>Morbi id felis porttitor tellus viverra pulvinar. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices.
-							Morbi id felis porttitor tellus viverra pulvinar. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices.
-						</p>
-						<div class="who-button">
-							<a href="#">Read More</a>
-						</div>
-					</div>
-					<div class="clearfix"> </div>
-				</div>
-			</div>
-			<!-- //container -->
-		</div>
+{#		<div class="before">#}
+{#			<!-- container -->#}
+{#			<div class="container">#}
+{#				<h2>Brief about us</h2>#}
+{#				<div class="before-grids">#}
+{#					<div class="before-grid">#}
+{#						<h3>Why us</h3>#}
+{#						<p>Morbi id felis porttitor tellus viverra pulvinar. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices.#}
+{#							Morbi id felis porttitor tellus viverra pulvinar. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices.#}
+{#						</p>#}
+{#						<div class="who-button">#}
+{#							<a href="#">Read More</a>#}
+{#						</div>#}
+{#					</div>#}
+{#					<div class="before-grid">#}
+{#						<h3>What we do</h3>#}
+{#						<p>Morbi id felis porttitor tellus viverra pulvinar. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices.#}
+{#							Morbi id felis porttitor tellus viverra pulvinar. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices.#}
+{#						</p>#}
+{#						<div class="who-button">#}
+{#							<a href="#">Read More</a>#}
+{#						</div>#}
+{#					</div>#}
+{#					<div class="before-grid">#}
+{#						<h3>Services</h3>#}
+{#						<p>Morbi id felis porttitor tellus viverra pulvinar. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices.#}
+{#							Morbi id felis porttitor tellus viverra pulvinar. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices.#}
+{#						</p>#}
+{#						<div class="who-button">#}
+{#							<a href="#">Read More</a>#}
+{#						</div>#}
+{#					</div>#}
+{#					<div class="clearfix"> </div>#}
+{#				</div>#}
+{#			</div>#}
+{#			<!-- //container -->#}
+{#		</div>#}
 		<!-- //before -->
 		<!-- footer -->
 		<div class="footer">
@@ -216,21 +248,21 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			<!-- //container -->
 		</div>
 		<!-- //footer -->
-		<script type="text/javascript">
-									$(document).ready(function() {
-										/*
-										var defaults = {
-								  			containerID: 'toTop', // fading element id
-											containerHoverID: 'toTopHover', // fading element hover id
-											scrollSpeed: 1200,
-											easingType: 'linear' 
-								 		};
-										*/
-										
-										$().UItoTop({ easingType: 'easeOutQuart' });
-										
-									});
-								</script>
+{#		<script type="text/javascript">#}
+{#									$(document).ready(function() {#}
+{#										/*#}
+{#										var defaults = {#}
+{#								  			containerID: 'toTop', // fading element id#}
+{#											containerHoverID: 'toTopHover', // fading element hover id#}
+{#											scrollSpeed: 1200,#}
+{#											easingType: 'linear' #}
+{#								 		};#}
+{#										*/#}
+{#										#}
+{#										$().UItoTop({ easingType: 'easeOutQuart' });#}
+{#										#}
+{#									});#}
+{#								</script>#}
 									<a href="#" id="toTop" style="display: block;"> <span id="toTopHover" style="opacity: 1;"> </span></a>
 	<!-- content-Get-in-touch -->
 	</body>

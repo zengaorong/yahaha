@@ -81,10 +81,10 @@
                     <tr>
                         <th>序号</th>
                         <th>漫画名称</th>
-                        <th>章节数目</th>
-                        <th>最新章节</th>
-                        <th>修改时间</th>
-                        <th>备注</th>
+{#                        <th>章节数目</th>#}
+{#                        <th>最新章节</th>#}
+{#                        <th>修改时间</th>#}
+{#                        <th>备注</th>#}
                         <th>操作</th>
                     </tr>
 
@@ -113,11 +113,11 @@
                         <tr>
                             <td>{{ loop.index }}</td>
                             <td>{{ post.mhname  }}</td>
-                            <td>待定 </td>
+{#                            <td>待定 </td>#}
 {#                            显示的位置会不同 用money属性#}
-                            <td class="money">待定</td>
-                            <td>{{post.updata_time}}</td>
-                            <td>&nbsp;</td>
+{#                            <td class="money">待定</td>#}
+{#                            <td>{{post.updata_time}}</td>#}
+{#                            <td>&nbsp;</td>#}
                             <td class="last">
                                 <a href="/mhcontrol/backfrom?id={{ post.id }}">修改 </a>
                                 <a href="/chaptercontrol/chapterlist?mhid={{ post.id }}">章节管理</a>

@@ -68,8 +68,8 @@
         <!-- MainForm -->
         <div id="MainForm">
             <div class="form_boxB">
-                <h2>漫画管理列表
-                    <a href="/chaptercontrol/chapterfrom?mhname_id={{ mhid }}">添加漫画</a>
+                <h2>章节管理列表
+                    <a href="/chaptercontrol/chapterfrom?mhname_id={{ mhid }}">添加章节</a>
                 </h2>
 
 
@@ -80,11 +80,11 @@
                     </tr>
                     <tr>
                         <th>序号</th>
-                        <th>漫画名称</th>
-                        <th>章节数目</th>
-                        <th>最新章节</th>
-                        <th>修改时间</th>
-                        <th>备注</th>
+                        <th>章节名称</th>
+{#                        <th>章节数目</th>#}
+{#                        <th>最新章节</th>#}
+{#                        <th>修改时间</th>#}
+{#                        <th>备注</th>#}
                         <th>操作</th>
                     </tr>
 
@@ -113,11 +113,11 @@
                         <tr>
                             <td>{{ loop.index }}</td>
                             <td>{{ post.chapter_name  }}</td>
-                            <td>待定 </td>
+{#                            <td>待定 </td>#}
                             {#                            显示的位置会不同 用money属性#}
-                            <td class="money">待定</td>
-                            <td>{{post.pics_nums}}</td>
-                            <td></td>
+{#                            <td class="money">待定</td>#}
+{#                            <td>{{post.pics_nums}}</td>#}
+{#                            <td></td>#}
                             <td class="last">
                                 <a href="/chaptercontrol/chapterfrom?id={{ post.id }}&mhid={{ mhid }}">章节信息修改 </a>
                                 <a href="/chaptercontrol/chapterpicfrom?id={{ post.id }}&mhid={{ mhid }}">章节图片修改 </a>
