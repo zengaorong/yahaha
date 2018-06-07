@@ -178,7 +178,12 @@ def test4(chaptername,check_strs,mhname):
         updata_mhname_todb([[has_id,mhname]])
 
     chapterid = uuid.uuid1()
-    updata_mhdata_todb([[chapterid,has_id,temp_strs,0,len(check_strs),chaptername]])
+    num_lists =  re.findall(r"\d+\.?\d*",chaptername)
+    try:
+        updata_mhdata_todb([[chapterid,has_id,temp_strs,int(num_lists[0]),len(check_strs),chaptername]])
+
+    except Exception,e:
+        pass
 
     #print db_list
     # chapter_id,chapter_type,mhname,chapter_name,chapter_nums,chapter_data_list

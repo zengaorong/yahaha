@@ -27,9 +27,18 @@ def index():
 # 漫画章节页面
 @manhua.route('/mhchapter/<mh_id>',methods=['GET', 'POST'])
 def mhchapter(mh_id):
-    chapters = Chapter.query.filter_by(mhname_id = mh_id).all()
+    chapters = Chapter.query.filter_by(mhname_id = mh_id).order_by(Chapter.chapter_nums.asc()).all()
     manhua = Manhua.query.filter_by(id=mh_id).first()
-    return render_template('manhua/mhchapter.html',chapters = chapters,manhua=manhua)
+
+    page = request.args.get('page', 1, type=int)
+    # 使用and__测试联合查询  mhid
+    pagination = Chapter.query.filter_by(mhname_id = mh_id).order_by(Chapter.chapter_nums.asc()).paginate(
+        page, per_page=current_app.config['FLASKY_POSTS_CHAP_PAGE'],
+        error_out=False)
+    posts = pagination.items
+
+
+    return render_template('manhua/mhchapter.html',manhua=manhua,pagination=pagination,posts=posts)
 
 
 

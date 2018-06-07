@@ -19,6 +19,7 @@ class Config:
     UPLOADED_PHOTOS_DEST = os.getcwd() + '/app/static/upload'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     FLASKY_POSTS_PER_PAGE = 10
+    FLASKY_POSTS_CHAP_PAGE = 100
 
 
     @staticmethod
