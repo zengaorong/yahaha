@@ -188,6 +188,8 @@ def test4(chaptername,check_strs,mhname):
     try:
         updata_mhdata_todb([[chapterid,has_id,temp_strs,chapter_nums,len(check_strs),chaptername]])
     except Exception,e:
+        print chaptername
+        print chaptername.decode('utf-8')
         pass
 
     #print db_list
