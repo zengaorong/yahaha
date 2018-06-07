@@ -160,11 +160,17 @@ def test4(chaptername,check_strs,mhname):
     #print check_strs
     for list in check_strs:
 
-
         temp_list = test3(chaptername,list,mhname)
         # for key in temp_list:
         #     print key
-        db_list[int(temp_list[4])] = temp_list[5]
+        try:
+            if(int(temp_list[4]) > len(check_strs)):
+                db_list =  [""]
+                break
+            db_list[int(temp_list[4])] = temp_list[5]
+        except Exception , e:
+            #print temp_list[4]
+            pass
 
 
     temp_strs = ""
@@ -188,8 +194,8 @@ def test4(chaptername,check_strs,mhname):
     try:
         updata_mhdata_todb([[chapterid,has_id,temp_strs,chapter_nums,len(check_strs),chaptername]])
     except Exception,e:
-        print chaptername
-        print chaptername.decode('utf-8')
+        #print chaptername
+        #print chaptername.decode('utf-8')
         pass
 
     #print db_list
