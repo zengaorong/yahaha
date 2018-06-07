@@ -9,10 +9,11 @@ import platform
 reload(sys)
 sys.setdefaultencoding('utf-8')
 dataname = "leodb"
+host='120.79.217.238'
 
 def updata_mhdata_todb(list):
     conn= MySQLdb.connect(
-        host='127.0.0.1',
+        host= host,
         port = 3306,
         user='root',
         passwd='7monthdleo',
@@ -34,7 +35,7 @@ def updata_mhdata_todb(list):
 
 def updata_mhname_todb(list):
     conn= MySQLdb.connect(
-        host='127.0.0.1',
+        host=host,
         port = 3306,
         user='root',
         passwd='7monthdleo',
@@ -50,7 +51,7 @@ def updata_mhname_todb(list):
 
 def get_chapter_bydb():
     conn= MySQLdb.connect(
-        host='127.0.0.1',
+        host=host,
         port = 3306,
         user='root',
         passwd='7monthdleo',
@@ -65,7 +66,7 @@ def get_chapter_bydb():
 
 def get_mhname_bydb(mhname):
     conn= MySQLdb.connect(
-        host='127.0.0.1',
+        host=host,
         port = 3306,
         user='root',
         passwd='7monthdleo',
@@ -176,12 +177,16 @@ def test4(chaptername,check_strs,mhname):
     if(not has_name):
         has_id = uuid.uuid1()
         updata_mhname_todb([[has_id,mhname]])
+        print  mhname
 
     chapterid = uuid.uuid1()
     num_lists =  re.findall(r"\d+\.?\d*",chaptername)
+    if(len(num_lists)==0):
+        chapter_nums = 0
+    else:
+        chapter_nums = int(num_lists[0])
     try:
-        updata_mhdata_todb([[chapterid,has_id,temp_strs,int(num_lists[0]),len(check_strs),chaptername]])
-
+        updata_mhdata_todb([[chapterid,has_id,temp_strs,chapter_nums,len(check_strs),chaptername]])
     except Exception,e:
         pass
 
