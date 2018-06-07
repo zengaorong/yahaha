@@ -12,7 +12,7 @@ dataname = "leodb"
 
 def updata_mhdata_todb(list):
     conn= MySQLdb.connect(
-        host='120.79.217.238',
+        host='127.0.0.1',
         port = 3306,
         user='root',
         passwd='7monthdleo',
@@ -34,7 +34,7 @@ def updata_mhdata_todb(list):
 
 def updata_mhname_todb(list):
     conn= MySQLdb.connect(
-        host='120.79.217.238',
+        host='127.0.0.1',
         port = 3306,
         user='root',
         passwd='7monthdleo',
@@ -50,7 +50,7 @@ def updata_mhname_todb(list):
 
 def get_chapter_bydb():
     conn= MySQLdb.connect(
-        host='120.79.217.238',
+        host='127.0.0.1',
         port = 3306,
         user='root',
         passwd='7monthdleo',
@@ -65,7 +65,7 @@ def get_chapter_bydb():
 
 def get_mhname_bydb(mhname):
     conn= MySQLdb.connect(
-        host='120.79.217.238',
+        host='127.0.0.1',
         port = 3306,
         user='root',
         passwd='7monthdleo',
