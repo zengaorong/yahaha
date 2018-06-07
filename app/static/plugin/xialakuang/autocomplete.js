@@ -14,7 +14,7 @@ Author: Lorenzo Cioni - https://github.com/lorecioni
 		//Default parameters
 		params = $.extend({
 			hints: [],
-			placeholder: '漫画名称：例如海贼王',
+			placeholder: '漫画名称：例如火影忍者',
 			width: 200,
 			height: 16,
 			showButton: true,
