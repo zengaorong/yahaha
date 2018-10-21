@@ -6,6 +6,7 @@ from flask_login import login_user, logout_user, login_required, \
     current_user
 from . import manhua
 from ..models import Manhua,Chapter
+from tools.readexcel import readexcel_todict
 from sqlalchemy import and_
 import sys
 
@@ -76,3 +77,19 @@ def getpics_by_id():
     return jsonify(result = chapter_list)
 
 
+# 测试内部读取excel
+@manhua.route('/books', methods=['GET', 'POST'])
+def books():
+    return render_template('manhua/login.html')
+
+# 测试内部读取excel
+@manhua.route('/account', methods=[ 'POST'])
+def account():
+    account = request.form.get('account')
+    password = request.form.get('password')
+    dic1 = readexcel_todict("app/manhua/books.xls",1,1,0)
+    print dic1[password]
+    if(dic1[password][0] == account):
+        return "<h1>ok<h1>"
+    else:
+        return "<h1>wrong<h1>"
