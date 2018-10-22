@@ -6,7 +6,7 @@ from flask_login import login_user, logout_user, login_required, \
     current_user
 from . import manhua
 from ..models import Manhua,Chapter
-from tools.readexcel import readexcel_todict
+from tools.readexceltool import readexcel_todict
 from sqlalchemy import and_
 import sys
 
@@ -93,3 +93,8 @@ def account():
         return "<h1>ok<h1>"
     else:
         return "<h1>wrong<h1>"
+
+# 测试内部读取excel
+@manhua.route('/bookadd', methods=['GET', 'POST'])
+def bookadd():
+    return render_template('manhua/bookadd.html')
