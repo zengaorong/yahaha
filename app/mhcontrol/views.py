@@ -52,7 +52,7 @@ def manhualist():
     posts = pagination.items
 
     listsize = len(posts)
-    return render_template('mhcontrol/manhualist.html',posts=posts,pagination=pagination,listsize=listsize)
+    return render_template('mhcontrol/loglist.html',posts=posts,pagination=pagination,listsize=listsize)
 
 
 @mhcontrol.route('/delete',methods=['get'])

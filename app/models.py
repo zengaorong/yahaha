@@ -90,11 +90,24 @@ class User(UserMixin, db.Model):
 class Worker(db.Model):
     __tablename__ = 'worker'
     id = db.Column(db.VARCHAR(36), primary_key=True)
-    workername = db.Column(db.String(64), unique=True)
+    workername = db.Column(db.String(64))
     account = db.Column(db.VARCHAR(36))
     password = db.Column(db.VARCHAR(36))
     def __repr__(self):
         return '<worker %r>' % self.workername
+
+class Logbook(db.Model):
+    __tablename__ = 'Logbook'
+    id = db.Column(db.VARCHAR(36), primary_key=True)
+    workerid = db.Column(db.VARCHAR(36), db.ForeignKey('worker.id'))
+    creat_time = db.Column(db.DATETIME)
+    updata_time = db.Column(db.DATETIME)
+    logbook_time = db.Column(db.DATETIME)
+    work_for = db.Column(db.String(1024))
+    log_type = db.Column(db.VARCHAR(1))
+
+    def __repr__(self):
+        return '<Logbook %r>' % self.work_for
 
 @login_manager.user_loader
 def load_user(user_id):

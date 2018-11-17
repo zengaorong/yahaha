@@ -299,7 +299,7 @@ def mhfrom(mh_id):
 #         page, per_page=2,
 #         error_out=False)
 #     posts = pagination.items
-#     return render_template('auth/manhualist.html',posts=posts,pagination=pagination)
+#     return render_template('auth/loglist.html',posts=posts,pagination=pagination)
 
 
 # @auth.route('/wordtest',methods=['GET', 'POST'])

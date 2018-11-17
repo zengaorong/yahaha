@@ -19,13 +19,14 @@
         <!-- colors -->
         <div class="row">
             <div class="col-xs-3">
-                <a href="#" class="btn disabled btn-block btn-lg btn-primary">之前日志补加</a>
+                <a href="/worker/logbook_today" class="btn  btn-block btn-lg btn-primary">之前日志补加</a>
+{#                <a href="/worker/logbook_today" class="btn disabled btn-block btn-lg btn-primary">之前日志补加</a>#}
             </div>
             <div class="col-xs-3">
-                <a href="#" class="btn disabled btn-block btn-lg btn-success">单天日志添加</a>
+                <a href="/worker/logbook_today?id={{ worker.id }}" class="btn btn-block btn-lg btn-success">单天日志添加</a>
             </div>
             <div class="col-xs-3">
-                <a href="#" class="btn disabled btn-block btn-lg btn-warning">个人日志查询</a>
+                <a href="/worker/loglist?id={{ worker.id }}" class="btn  btn-block btn-lg btn-warning">个人日志查询</a>
             </div>
         </div>
     </div>

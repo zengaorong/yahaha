@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html ng-app="app" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>时间选择器</title>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='widget/time/css/wui.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='widget/time/css/style.css')}}">
+    <script src="{{url_for('static', filename='jquery-3.2.1/jquery-3.2.1.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='widget/time/js/angular.min.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='widget/time/js/wui-date.js')}}" charset="utf-8"></script>
+</head>
+
+<body>
+<div class="wui-content">
+    <div class="wui-area">
+        <h2 class="h2">WUI-DatePicker 日期选择器</h2>
+    </div>
+    <h3 class="h3">参考</h3>
+    <div class="wui-area">
+        <h4 class="h4">选择年月日</h4>
+        <p>输出格式yyyy-mm-dd</p>
+        <wui-date
+                format="yyyy-mm-dd"
+                placeholder="请选择或输入日期"
+                id="date1"
+                btns="{'ok':'确定','now':'此刻'}"
+                ng-model="date1"
+        >
+        </wui-date>
+    </div>
+</div>
+<script type="text/javascript">
+    var app = angular.module('app',["wui.date"]);
+</script>
+</body>
+</html>
