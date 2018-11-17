@@ -50,7 +50,7 @@ def create_app(config_name):
     from .chaptercontrol import chaptercontrol as chaptercontrol_blueprint
     app.register_blueprint(chaptercontrol_blueprint, url_prefix='/chaptercontrol')
 
-    from .tianwang import tianwang  as tianwang_blueprint
-    app.register_blueprint(tianwang_blueprint, url_prefix='/tianwang')
+    from .worker import worker  as worker_blueprint
+    app.register_blueprint(worker_blueprint, url_prefix='/worker')
 
     return app

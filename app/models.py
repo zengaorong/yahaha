@@ -87,6 +87,15 @@ class User(UserMixin, db.Model):
         return '<User %r>' % self.username
 
 
+class Worker(db.Model):
+    __tablename__ = 'worker'
+    id = db.Column(db.VARCHAR(36), primary_key=True)
+    workername = db.Column(db.String(64), unique=True)
+    account = db.Column(db.VARCHAR(36))
+    password = db.Column(db.VARCHAR(36))
+    def __repr__(self):
+        return '<worker %r>' % self.workername
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))

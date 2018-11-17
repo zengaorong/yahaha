@@ -115,5 +115,5 @@ class Chapter(db.Model):
 
 db.create_all()
 db.session.commit()
-if __name__ == "__main__":
-    manager.run()
+# if __name__ == "__main__":
+#     manager.run()
