@@ -69,7 +69,7 @@
         <div id="MainForm">
             <div class="form_boxB">
                 <h2>日志列表
-                    <a href="/mhcontrol/backfrom">返回主页</a>
+                    <a href="/worker/index/{{ id }}">返回主页</a>
                 </h2>
 
 
@@ -90,11 +90,11 @@
                         <tr>
                             <td>{{ loop.index }}</td>
                             <td>{{ post.logbook_time  }}</td>
-                            <td>{{ post.week  }}</td>
-                            <td>{{ post.work_for  }}</td>
+                            <td >{{ post.week  }}</td>
+                            <td style="max-width: 200px;overflow: hidden; text-overflow:ellipsis;white-space: nowrap">{{ post.work_for  }}</td>
                             <td class="last">
-                                <a href="/mhcontrol/backfrom?id={{ post.id }}">修改 </a>
-                                <a href="/mhcontrol/delete?id={{ post.id }}">删除</a>
+                                <a href="/worker/logbook_today?id={{ post.workerid }}&logbookid={{ post.id }}">修改 </a>
+                                <a href="/worker/delete?id={{ post.id }}" onclick="javascript:return del();">删除</a>
                             </td>
                         </tr>
                     {% endfor %}
@@ -105,53 +105,6 @@
         </div>
         <!-- /MainForm -->
 
-
-        <!-- BtmMain -->
-{#        <div id="BtmMain">#}
-{#            <span class="ttl">全部审批</span>#}
-{##}
-{#            <!-- txtbox -->#}
-{#            <div class="txtbox floatL mag_r20">#}
-{#                <span class="sttl">审核时间：</span>#}
-{#                <input name="" type="text" size="8">#}
-{#            </div>#}
-{#            <!-- /txtbox -->#}
-{##}
-{#            <!-- txtbox -->#}
-{#            <div class="txtbox floatL mag_r20">#}
-{#                <span class="sttl">审核人：</span>#}
-{#                <input name="" type="text" size="8">#}
-{#            </div>#}
-{#            <!-- /txtbox -->#}
-{##}
-{#            <!-- btn_box -->#}
-{#            <div class="btn_box floatR mag_l20"><input name="" type="button" value="返回列表" onMouseMove="this.className='input_move'" onMouseOut="this.className='input_out'"></div>#}
-{#            <!-- /btn_box -->#}
-{##}
-{#            <!-- btn_box -->#}
-{#            <div class="btn_box floatR mag_l20"><input name="" type="button" value="驳回" onMouseMove="this.className='input_move'" onMouseOut="this.className='input_out'"></div>#}
-{#            <!-- /btn_box -->#}
-{##}
-{#            <!-- btn_box -->#}
-{#            <div class="btn_box floatR mag_l20"><input name="" type="button" value="通过" onMouseMove="this.className='input_move'" onMouseOut="this.className='input_out'"></div>#}
-{#            <!-- /btn_box -->#}
-{#        </div>#}
-        <!-- /BtmMain -->
-
-        <!-- PageNum -->
-{#        <ul id="PageNum">#}
-{#            <li><a href="#">首页</a></li>#}
-{#            <li><a href="#">上一页</a></li>#}
-{#            <li><a href="#">1</a></li>#}
-{#            <li><a href="#">2</a></li>#}
-{#            <li><a href="#">3</a></li>#}
-{#            <li><a href="#">4</a></li>#}
-{#            <li><a href="#">5</a></li>#}
-{#            <li><a href="#">6</a></li>#}
-{#            <li><a href="#">下一页</a></li>#}
-{#            <li><a href="#">尾页</a></li>#}
-{#        </ul>#}
-        <!-- /PageNum -->
     </div>
     <!-- /Contents -->
 
@@ -162,6 +115,16 @@
     <!-- /footer -->
 
 </div>
+<script>
+    function del() {
+        var msg = "您真的确定要删除吗？\n\n请确认！";
+        if (confirm(msg)==true){
+            return true;
+        }else{
+            return false;
+        }
+    }
+</script>
 <!-- /wrap_right -->
 </body>
 </html>
