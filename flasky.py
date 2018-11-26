@@ -21,6 +21,6 @@ def test():
     tests = unittest.TestLoader().discover('tests')
     unittest.TextTestRunner(verbosity=2).run(tests)
 
-
+#app.run()
 app.run(host='127.0.0.1',port=8083,debug=True)
 #app.run(host='192.168.8.129',port=8083,debug=True)

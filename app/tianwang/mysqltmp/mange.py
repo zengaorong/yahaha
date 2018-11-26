@@ -19,33 +19,27 @@ class Watcher(db.Model):
     watchertype = db.Column(db.String(5))
     watcherserverip = db.Column(db.String(64))
     watcherip = db.Column(db.String(64))
-    watcherlongitude = db.Column(db.VARCHAR(5))
-    watcherlatitude = db.Column(db.VARCHAR(5))
+    watcherlongitude = db.Column(db.DECIMAL(10,6))
+    watcherlatitude = db.Column(db.DECIMAL(10,6))
     account = db.Column(db.VARCHAR(36))
     password = db.Column(db.VARCHAR(36))
     def __repr__(self):
         return '<Watcher %r>' % self.watchername
 
-class Worker(db.Model):
-    __tablename__ = 'worker'
+class Wterror(db.Model):
+    __tablename__ = 'wterror'
     id = db.Column(db.VARCHAR(36), primary_key=True)
-    workername = db.Column(db.String(64))
-    account = db.Column(db.VARCHAR(36))
-    password = db.Column(db.VARCHAR(36))
-    def __repr__(self):
-        return '<worker %r>' % self.workername
-
-class Logbook(db.Model):
-    __tablename__ = 'Logbook'
-    id = db.Column(db.VARCHAR(36), primary_key=True)
-    workerid = db.Column(db.VARCHAR(36), db.ForeignKey('worker.id'))
+    watcher_id = db.Column(db.VARCHAR(36),db.ForeignKey('watcher.id'))
     creat_time = db.Column(db.DATETIME)
     updata_time = db.Column(db.DATETIME)
-    logbook_time = db.Column(db.DATETIME)
     work_for = db.Column(db.String(1024))
+    erro_type = db.Column(db.VARCHAR(5))
     log_type = db.Column(db.VARCHAR(1))
-
+    del_type = db.Column(db.VARCHAR(1))
     def __repr__(self):
-        return '<Logbook %r>' % self.workername
+        return '<Watcher %r>' % self.watchername
+
+
+
 db.create_all()
 db.session.commit()
