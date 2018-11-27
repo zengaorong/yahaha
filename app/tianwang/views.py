@@ -16,12 +16,7 @@ sys.setdefaultencoding('utf-8')
 @tianwang.route('/list', methods=['GET'])
 def list():
     page = request.args.get('page', 1, type=int)
-
-    # pagination = Logbook.query.filter_by(workerid=workerid).order_by(Logbook.creat_time.desc()).paginate(
-    #     page, per_page=current_app.config['FLASKY_POSTS_PER_PAGE'],
-    #     error_out=False)
-    # db.session.query  Wterror.query.filter_by Wterror.watcher_id,Wterror.creat_time,Wterror.work_for,
-    pagination = db.session.query(Wterror,Watcher.watchername,Watcher.watchernum).outerjoin(Watcher,Watcher.id == Wterror.watcher_id ).order_by(Wterror.creat_time.desc()).paginate(
+    pagination = db.session.query(Wterror,Watcher.watchername,Watcher.id).outerjoin(Watcher,Watcher.id == Wterror.watcher_id ).filter(Wterror.del_type == 0 ).order_by(Wterror.creat_time.desc()).paginate(
         page, per_page=current_app.config['FLASKY_POSTS_PER_PAGE'],
         error_out=False)
     posts = pagination.items
@@ -42,10 +37,41 @@ def list():
         return week_day_dict[day]
 
     for key in posts:
-        key.week = get_week_day(key.creat_time)
-        key.creat_time = key.creat_time.strftime("%Y-%m-%d")
+        key.Wterror.week = get_week_day(key.Wterror.creat_time)
+        key.Wterror.creat_time = key.Wterror.creat_time.strftime("%Y-%m-%d")
 
-    return "OK"
-    #return render_template('tianwang/list.html',posts=posts,pagination=pagination,listsize=listsize)
+    return render_template('tianwang/list.html',posts=posts,pagination=pagination,listsize=listsize)
 
+# 删除日志
+@tianwang.route('/delete',methods=['get'])
+def delete():
+    id = request.args.get('id', "", type=str)
+    wterror = Wterror.query.filter_by(id=id).first()
+    wterror.del_type = "1"
+    dt = datetime.now()
+    time = dt.strftime( '%Y-%m-%d %H:%M:%S' )
+    wterror.updata_time = time
+    db.session.add(wterror)
+    db.session.commit()
+    return redirect(url_for('tianwang.list'))
 
+# 故障提交表单
+@tianwang.route('/logbook_today',methods=['GET', 'POST'])
+def logbook_today():
+    id = request.args.get('id', "", type=str)
+    wterror = Wterror.query.filter_by(id=id).first()
+    return render_template('tianwang/twfrom.html',wterror=wterror)
+
+# 故障保存
+@tianwang.route('/savelog', methods=['POST'])
+def savelog():
+    id = request.form.get('id', "", type=str)
+    work_for = request.form.get('work_for', "", type=str)
+    if id != "":
+        wterror = Wterror.query.filter_by(id=id).first()
+        wterror.work_for = work_for
+
+        db.session.add(wterror)
+        db.session.commit()
+        return redirect(url_for('tianwang.list'))
+    return '''<h1>数据错误<h1> <a href="/tianwang/logbook_today?id=%s">返回</a>''' %(id)

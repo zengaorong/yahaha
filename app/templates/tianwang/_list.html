@@ -84,21 +84,21 @@
                         <th>名称</th>
                         <th>开始时间</th>
                         <th>开始星期</th>
-                        <th>内容</th>
+                        <th>故障原因</th>
                         <th>操作</th>
                     </tr>
                     {% for post in posts %}
 
                         <tr>
-                            <td>{{ loop.index }}</td>
-                            <td>{{ post.watcher_id }}</td>
-                            <td>{{ post.index }}</td>
-                            <td>{{ post.creat_time  }}</td>
-                            <td >{{ post.week  }}</td>
-                            <td style="max-width: 200px;overflow: hidden; text-overflow:ellipsis;white-space: nowrap">{{ post.work_for  }}</td>
+                            <td style="max-width: 10px">{{ loop.index }}</td>
+                            <td style="max-width: 10px">{{ post.id }}</td>
+                            <td style="max-width: 150px">{{ post.watchername }}</td>
+                            <td>{{ post.Wterror.creat_time  }}</td>
+                            <td >{{ post.Wterror.week  }}</td>
+                            <td style="max-width: 300px;overflow: hidden; text-overflow:ellipsis;white-space: nowrap">{{ post.Wterror.work_for  }}</td>
                             <td class="last">
-                                <a href="/worker/logbook_today?id={{ post.workerid }}&logbookid={{ post.id }}">修改 </a>
-                                <a href="/worker/delete?id={{ post.id }}" onclick="javascript:return del();">删除</a>
+                                <a href="/tianwang/logbook_today?id={{ post.Wterror.id }}&logbookid={{ post.id }}">修改 </a>
+                                <a href="/tianwang/delete?id={{ post.Wterror.id }}" onclick="javascript:return del();">修复</a>
                             </td>
                         </tr>
                     {% endfor %}
@@ -121,7 +121,7 @@
 </div>
 <script>
     function del() {
-        var msg = "您真的确定要删除吗？\n\n请确认！";
+        var msg = "您真的确定该点已经修复？\n\n请确认！";
         if (confirm(msg)==true){
             return true;
         }else{

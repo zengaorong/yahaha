@@ -18,7 +18,7 @@ class Config:
     FLASKY_ADMIN = '1904959670@qq.com'
     UPLOADED_PHOTOS_DEST = os.getcwd() + '/app/static/upload'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    FLASKY_POSTS_PER_PAGE = 10
+    FLASKY_POSTS_PER_PAGE = 20
     FLASKY_POSTS_CHAP_PAGE = 100
 
 
