@@ -53,4 +53,7 @@ def create_app(config_name):
     from .worker import worker  as worker_blueprint
     app.register_blueprint(worker_blueprint, url_prefix='/worker')
 
+    from .tianwang import tianwang  as tianwang_blueprint
+    app.register_blueprint(tianwang_blueprint, url_prefix='/tianwang')
+
     return app

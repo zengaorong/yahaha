@@ -109,6 +109,36 @@ class Logbook(db.Model):
     def __repr__(self):
         return '<Logbook %r>' % self.work_for
 
+
+class Watcher(db.Model):
+    __tablename__ = 'watcher'
+    id = db.Column(db.VARCHAR(36), primary_key=True)
+    watchernum = db.Column(db.VARCHAR(5))
+    watchername = db.Column(db.String(64))
+    watchertown = db.Column(db.String(5))
+    watchertype = db.Column(db.String(5))
+    watcherserverip = db.Column(db.String(64))
+    watcherip = db.Column(db.String(64))
+    watcherlongitude = db.Column(db.DECIMAL(10,6))
+    watcherlatitude = db.Column(db.DECIMAL(10,6))
+    account = db.Column(db.VARCHAR(36))
+    password = db.Column(db.VARCHAR(36))
+    def __repr__(self):
+        return '<Watcher %r>' % self.watchername
+
+class Wterror(db.Model):
+    __tablename__ = 'wterror'
+    id = db.Column(db.VARCHAR(36), primary_key=True)
+    watcher_id = db.Column(db.VARCHAR(36),db.ForeignKey('watcher.id'))
+    creat_time = db.Column(db.DATETIME)
+    updata_time = db.Column(db.DATETIME)
+    work_for = db.Column(db.String(1024))
+    erro_type = db.Column(db.VARCHAR(5))
+    log_type = db.Column(db.VARCHAR(1))
+    del_type = db.Column(db.VARCHAR(1))
+    def __repr__(self):
+        return '<Watcher %r>' % self.watchername
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
