@@ -139,6 +139,19 @@ class Wterror(db.Model):
     def __repr__(self):
         return '<Watcher %r>' % self.watchername
 
+class Wtdel(db.Model):
+    __tablename__ = 'wtdel'
+    id = db.Column(db.VARCHAR(36), primary_key=True)
+    watcher_id = db.Column(db.VARCHAR(36),db.ForeignKey('watcher.id'))
+    creat_time = db.Column(db.DATETIME)
+    updata_time = db.Column(db.DATETIME)
+    work_for = db.Column(db.String(1024))
+    erro_type = db.Column(db.VARCHAR(5))
+    log_type = db.Column(db.VARCHAR(1))
+    del_type = db.Column(db.VARCHAR(1))
+    def __repr__(self):
+        return '<Watcher %r>' % self.watchername
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))

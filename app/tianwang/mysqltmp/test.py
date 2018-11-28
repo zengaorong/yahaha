@@ -25,9 +25,14 @@ def updata_watch_todb(nums,error_for):
     )
     cur = conn.cursor()
     sql_str = 'select * from  watcher where id="%s"'%nums
+
+    sql_select = 'select * from  wterror where watcher_id="%s"'%nums
+    select_have = cur.execute(sql_select)
+    select_list = cur.fetchmany(select_have)
+    if select_list:
+        return
+
     names = cur.execute(sql_str)
-
-
     info = cur.fetchmany(names)
     if info:
         temp_tuple = info[0]
@@ -41,5 +46,5 @@ def updata_watch_todb(nums,error_for):
     conn.commit()
     conn.close()
 
-if __name__ == "__main__":
-    updata_watch_todb("af_292C","1231232fsf")
+# if __name__ == "__main__":
+#     updata_watch_todb("af_292C","1231232fsf")
