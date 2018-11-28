@@ -114,7 +114,7 @@ def loglist():
         key.week = get_week_day(key.logbook_time)
         key.logbook_time = key.logbook_time.strftime("%Y-%m-%d")
 
-    return render_template('worker/list.html',posts=posts,pagination=pagination,listsize=listsize,id=workerid)
+    return render_template('worker/loglist.html',posts=posts,pagination=pagination,listsize=listsize,id=workerid)
 
 # 删除日志
 @worker.route('/delete',methods=['get'])

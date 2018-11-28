@@ -46,5 +46,38 @@ def updata_watch_todb(nums,error_for):
     conn.commit()
     conn.close()
 
-# if __name__ == "__main__":
-#     updata_watch_todb("af_292C","1231232fsf")
+def select_wterror():
+    conn= MySQLdb.connect(
+        host= host,
+        port = 3306,
+        user='root',
+        passwd='7monthdleo',
+        db = dataname ,
+        charset='utf8'
+    )
+    cur = conn.cursor()
+    sql_str = 'select * from  wterror'
+    wterror = cur.execute(sql_str)
+    wt_lists = cur.fetchmany(wterror)
+
+    return  wt_lists
+
+def delete_wterror_todb():
+    conn= MySQLdb.connect(
+        host= host,
+        port = 3306,
+        user='root',
+        passwd='7monthdleo',
+        db = dataname ,
+        charset='utf8'
+    )
+    cur = conn.cursor()
+    sql_str = 'select * from  wterror'
+    wterror = cur.execute(sql_str)
+    wt_lists = cur.fetchmany(wterror)
+
+    if wt_lists:
+        temp_tuple = wt_lists[0]
+
+if __name__ == "__main__":
+    delete_wterror_todb()

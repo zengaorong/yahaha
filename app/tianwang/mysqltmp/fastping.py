@@ -6,7 +6,7 @@ import time
 import xlrd
 from leotool.readexcel import readexcel_todict
 sys.setdefaultencoding('utf-8')
-from test import updata_watch_todb
+from test import updata_watch_todb,select_wterror
 
 import subprocess
 
@@ -115,9 +115,13 @@ def down_data(ip_key):
         else:
             dict_for_out[key[4]] = [key]
 
+    temp_error_list = []
     for key in dict_for_out:
         for wrong_list in dict_for_out[key]:
             updata_watch_todb(wrong_list[0],wrong_list[2])
+            temp_error_list.append(wrong_list[0])
+
+    error_list = select_wterror()
     # f = open("out.txt",'w+')
     # wrong_str = ''
     # wrong_str_name = ''
@@ -143,3 +147,4 @@ if __name__ == '__main__':
     #     break
 
     down_data(dic1)
+

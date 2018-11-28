@@ -100,7 +100,7 @@
                     {% endfor %}
 
                 </table>
-                <p class="msg">共找到{{ listsize }}条记录，当前显示从第{{ pagination.per_page * (pagination.page-1) + 1 }}条至第{% if pagination.next_num   %}{{ pagination.per_page * (pagination.page)}}{% else %}{{ pagination.total}}{% endif %}条</p>
+                <p class="msg">共找到{{ pagination.total }}条记录，当前显示从第{{ pagination.per_page * (pagination.page-1) + 1 }}条至第{% if pagination.next_num   %}{{ pagination.per_page * (pagination.page)}}{% else %}{{ pagination.total}}{% endif %}条</p>
             </div>
         </div>
         <!-- /MainForm -->

@@ -87,8 +87,27 @@ def savelog():
 
 @tianwang.route('/list_ys', methods=['GET'])
 def list_ys():
+    dt = datetime.today()
+    oneday = timedelta(days=1)
+    yesterday = dt-oneday
+    time = yesterday.strftime( '%Y-%m-%d %H:%M:%S' )
+    print time
+
+    # 获取当前时间
+    now = datetime.now()
+    # 获取今天零点
+    zeroToday = now - timedelta(hours=now.hour, minutes=now.minute, seconds=now.second,microseconds=now.microsecond)
+    # 获取23:59:59
+    lastToday = zeroToday - timedelta(hours=23, minutes=59, seconds=59)
+    # 获取前一天的当前时间
+    yesterdayNow = now - timedelta(hours=23, minutes=59, seconds=59)
+    # 获取明天的当前时间
+    tomorrowNow = now + timedelta(hours=23, minutes=59, seconds=59)
+
+    # Wtdel.creat_time >= zeroToday and Wtdel.creat_time<=now
+
     page = request.args.get('page', 1, type=int)
-    pagination = db.session.query(Wterror,Watcher.watchername,Watcher.id).outerjoin(Watcher,Watcher.id == Wterror.watcher_id ).filter(Wterror.del_type == 0 ).order_by(Wterror.creat_time.desc()).paginate(
+    pagination = db.session.query(Wtdel).filter(and_(Wtdel.creat_time >= lastToday  , Wtdel.creat_time<now)).order_by(Wtdel.creat_time.desc()).paginate(
         page, per_page=current_app.config['FLASKY_POSTS_PER_PAGE'],
         error_out=False)
     posts = pagination.items
@@ -109,53 +128,8 @@ def list_ys():
         return week_day_dict[day]
 
     for key in posts:
-        key.Wterror.week = get_week_day(key.Wterror.creat_time)
-        key.Wterror.creat_time = key.Wterror.creat_time.strftime("%Y-%m-%d")
+        key.week = get_week_day(key.creat_time)
+        key.creat_time = key.creat_time.strftime("%Y-%m-%d")
 
-    return render_template('tianwang/list.html',posts=posts,pagination=pagination,listsize=listsize)
-    # dt = datetime.today()
-    # oneday = timedelta(days=1)
-    # yesterday = dt-oneday
-    # time = yesterday.strftime( '%Y-%m-%d %H:%M:%S' )
-    # print time
-    #
-    # # 获取当前时间
-    # now = datetime.now()
-    # # 获取今天零点
-    # zeroToday = now - timedelta(hours=now.hour, minutes=now.minute, seconds=now.second,microseconds=now.microsecond)
-    # # 获取23:59:59
-    # lastToday = zeroToday - timedelta(hours=23, minutes=59, seconds=59)
-    # # 获取前一天的当前时间
-    # yesterdayNow = now - timedelta(hours=23, minutes=59, seconds=59)
-    # # 获取明天的当前时间
-    # tomorrowNow = now + timedelta(hours=23, minutes=59, seconds=59)
-    #
-    # # Wtdel.creat_time >= zeroToday and Wtdel.creat_time<=now
-    #
-    # page = request.args.get('page', 1, type=int)
-    # pagination = db.session.query(Wtdel).filter(and_(Wtdel.creat_time >= lastToday  , Wtdel.creat_time<now)).order_by(Wtdel.creat_time.desc()).paginate(
-    #     page, per_page=current_app.config['FLASKY_POSTS_PER_PAGE'],
-    #     error_out=False)
-    # posts = pagination.items
-    #
-    # listsize = len(posts)
-    #
-    # def get_week_day(date):
-    #     week_day_dict = {
-    #         0 : '星期一',
-    #         1 : '星期二',
-    #         2 : '星期三',
-    #         3 : '星期四',
-    #         4 : '星期五',
-    #         5 : '星期六',
-    #         6 : '星期天',
-    #     }
-    #     day = date.weekday()
-    #     return week_day_dict[day]
-    #
-    # for key in posts:
-    #     key.week = get_week_day(key.creat_time)
-    #     key.creat_time = key.creat_time.strftime("%Y-%m-%d")
-    #
-    # return render_template('tianwang/posts.html',posts=posts,pagination=pagination,listsize=listsize)
+    return render_template('tianwang/rclist.html',posts=posts,pagination=pagination,listsize=listsize)
 

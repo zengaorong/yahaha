@@ -81,7 +81,6 @@
                     <tr>
                         <th>序号</th>
                         <th>编号</th>
-                        <th>名称</th>
                         <th>开始时间</th>
                         <th>开始星期</th>
                         <th>故障原因</th>
@@ -90,8 +89,7 @@
 
                         <tr>
                             <td style="max-width: 10px">{{ loop.index }}</td>
-                            <td style="max-width: 10px">{{ post.id }}</td>
-                            <td style="max-width: 150px">{{ post.watchername }}</td>
+                            <td style="max-width: 10px">{{ post.watcher_id }}</td>
                             <td>{{ post.creat_time  }}</td>
                             <td >{{ post.week  }}</td>
                             <td style="max-width: 300px;overflow: hidden; text-overflow:ellipsis;white-space: nowrap">{{ post.work_for  }}</td>
