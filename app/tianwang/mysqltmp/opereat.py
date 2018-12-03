@@ -3,7 +3,7 @@ import sys
 import MySQLdb
 import uuid
 import subprocess
-from datetime import  datetime
+from datetime import  datetime,timedelta
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -114,3 +114,14 @@ def delete_check(watcher_id):
     else:
         return False
     return False
+
+# 输入月份时间 2018-12 输入报表 乡镇 故障时间 点位名称 故障原因
+def print_out_month_table(time):
+    month_time = datetime.strptime(time,"%Y-%m")
+    print month_time
+    onemonth = timedelta(month=1)
+    print month_time + onemonth
+    # onesecond = timedelta(seconds=1)
+    # print type(month_time-onesecond)
+
+print_out_month_table("2018-12")

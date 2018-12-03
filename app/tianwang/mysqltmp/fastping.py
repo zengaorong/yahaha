@@ -69,7 +69,7 @@ def __load_one_chapter(list,resoult_list):
         if ret_server == 1 and ret_work == 1:
             wrong_str = "均不在线"
 
-        print dic2[list[2]][0]
+        #print dic2[list[2]][0]
         resoult_list.append([list[1],list[3],wrong_str,list[2],dic2[list[2]][0]])
     # if ret == 0:
     #     str = '%s is alive' % check_name
@@ -170,7 +170,7 @@ if __name__ == '__main__':
 
             starttime = datetime.datetime.now()
 
-            with open("log.txt","w+") as f:
+            with open("log.txt","a+") as f:
                 f.writelines(endtime.strftime( '%Y-%m-%d %H:%M:%S\n' ))
         else:
             time.sleep(times/2)
