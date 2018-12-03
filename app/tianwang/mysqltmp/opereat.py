@@ -1,14 +1,9 @@
 #coding=utf-8
 import sys
 import MySQLdb
-import os
-import re
 import uuid
-import platform
+import subprocess
 from datetime import  datetime
-from leotool.readexcel import readexcel_todict
-
-
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -62,7 +57,7 @@ def select_wterror():
 
     return  wt_lists
 
-def delete_wterror_todb():
+def delete_wterror_todb(watcher_id):
     conn= MySQLdb.connect(
         host= host,
         port = 3306,
@@ -72,12 +67,50 @@ def delete_wterror_todb():
         charset='utf8'
     )
     cur = conn.cursor()
-    sql_str = 'select * from  wterror'
-    wterror = cur.execute(sql_str)
-    wt_lists = cur.fetchmany(wterror)
+    sql_str = 'select * from  wterror where watcher_id="%s"'%watcher_id
+    del_data = cur.execute(sql_str)
+    del_data_tuple = cur.fetchmany(del_data)
+    sql_str = '''insert into wtdel(id,watcher_id,creat_time,updata_time,work_for,erro_type,log_type,del_type)values("%s","%s","%s","%s","%s","%s","%s","%s")'''%(del_data_tuple[0][0],del_data_tuple[0][1],del_data_tuple[0][2],del_data_tuple[0][3],del_data_tuple[0][4],del_data_tuple[0][5],del_data_tuple[0][6],del_data_tuple[0][7])
+    cur.execute(sql_str)
 
-    if wt_lists:
-        temp_tuple = wt_lists[0]
+    sql_str = 'delete from  wterror where watcher_id="%s"'%watcher_id
+    cur.execute(sql_str)
 
-if __name__ == "__main__":
-    delete_wterror_todb()
+    conn.commit()
+    conn.close()
+
+# 如果返还值为true删除该记录
+def delete_check(watcher_id):
+    conn= MySQLdb.connect(
+        host= host,
+        port = 3306,
+        user='root',
+        passwd='7monthdleo',
+        db = dataname ,
+        charset='utf8'
+    )
+    cur = conn.cursor()
+    sql_str = 'select * from  watcher where id="%s"'%watcher_id
+    del_data = cur.execute(sql_str)
+    data_tuple = cur.fetchmany(del_data)
+
+    server_ip = data_tuple[0][5]
+    worker_ip = data_tuple[0][6]
+
+    # if(list[14]=="不考核"):
+    #     return
+    if(server_ip=="" or worker_ip==""):
+        ip = server_ip
+        if(ip == ""):
+            ip = worker_ip
+        ret = subprocess.call("ping  %s -w 2000" % ip,shell=True,stdout=subprocess.PIPE)
+        if(ret==1):
+            return False
+        return True
+    ret_server = subprocess.call("ping  %s -w 2000" % server_ip,shell=True,stdout=subprocess.PIPE)
+    ret_work = subprocess.call("ping  %s -w 2000" % worker_ip,shell=True,stdout=subprocess.PIPE)
+    if ret_server==0 and ret_work==0:
+        return True
+    else:
+        return False
+    return False

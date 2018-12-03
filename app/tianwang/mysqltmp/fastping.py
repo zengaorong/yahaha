@@ -2,11 +2,12 @@
 import sys
 reload(sys)
 import threading
+import ConfigParser
 import time
-import xlrd
-from leotool.readexcel import readexcel_todict
+import datetime
+from readexcel import readexcel_todict
 sys.setdefaultencoding('utf-8')
-from test import updata_watch_todb,select_wterror
+from opereat import updata_watch_todb,select_wterror,delete_wterror_todb,delete_check
 
 import subprocess
 
@@ -122,6 +123,11 @@ def down_data(ip_key):
             temp_error_list.append(wrong_list[0])
 
     error_list = select_wterror()
+    for key in error_list:
+        print key[1]
+        if key[1] not in temp_error_list:
+            if delete_check(key[1]):
+                delete_wterror_todb(key[1])
     # f = open("out.txt",'w+')
     # wrong_str = ''
     # wrong_str_name = ''
@@ -139,12 +145,35 @@ def down_data(ip_key):
     # f.close()
 
 if __name__ == '__main__':
-    dic1 = readexcel_todict("安福天网汇总.xls".encode('GBK'),1,1,0)
-    # for key in dic1:
-    #     print dic1[key][0]
-    #     print key
-    #     print len(dic1[key])
-    #     break
+    cf = ConfigParser.ConfigParser()
+    cf.read("seting.config")
+    hour = cf.getint("time", "hour")
+    secode = cf.getint("time", "secode")
+    minutes = cf.getint("time", "minutes")
+    times = hour*60*60 + secode*60 + minutes
 
-    down_data(dic1)
+    isrun = True
+    starttime = datetime.datetime.now()
+    num = 0
+    while isrun:
+        endtime = datetime.datetime.now()
+        # print (endtime - starttime)
+        if (endtime - starttime).seconds > times:
+            print "rum" + str(num) + "time"
+            print endtime.strftime( '%Y-%m-%d %H:%M:%S' )
+            ret_server = subprocess.call("ping  %s -w 2000" % "172.22.180.1",shell=True,stdout=subprocess.PIPE)
+            if ret_server == 1:
+                pass
+            else:
+                dic1 = readexcel_todict("安福天网汇总.xls".encode('GBK'),1,1,0)
+                down_data(dic1)
+
+            starttime = datetime.datetime.now()
+
+            with open("log.txt","w+") as f:
+                f.writelines(endtime.strftime( '%Y-%m-%d %H:%M:%S\n' ))
+        else:
+            time.sleep(times/2)
+
+
 
