@@ -1,4 +1,4 @@
-{% import "tianwang/_rcmacros.html" as macros %}
+{% import "tianwang/_rcmacros.html" as rcmacros %}
 <!DOCTYPE html>
 <html>
 
@@ -22,7 +22,7 @@
 {% include 'tianwang/_rclist.html' %}
 {% if pagination %}
 <div class="pagination">
-    {{ macros.pagination_widget(pagination, '.list') }}
+    {{ rcmacros.pagination_widget(pagination, '.list_ys') }}
 </div>
 {% endif %}
 </body>

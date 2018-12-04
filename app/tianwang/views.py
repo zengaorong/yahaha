@@ -16,12 +16,12 @@ sys.setdefaultencoding('utf-8')
 @tianwang.route('/list', methods=['GET'])
 def list():
     page = request.args.get('page', 1, type=int)
-    pagination = db.session.query(Wterror,Watcher.watchername,Watcher.id).outerjoin(Watcher,Watcher.id == Wterror.watcher_id ).filter(Wterror.del_type == 0 ).order_by(Wterror.creat_time.desc()).paginate(
+    pagination = db.session.query(Wterror,Watcher.watchername,Watcher.id,Watcher.watcherserverip,Watcher.watcherip).outerjoin(Watcher,Watcher.id == Wterror.watcher_id ).filter(Wterror.del_type == 0 ).order_by(Wterror.creat_time.desc()).paginate(
         page, per_page=current_app.config['FLASKY_POSTS_PER_PAGE'],
         error_out=False)
     posts = pagination.items
 
-    listsize = len(posts)
+    listsize = pagination.total
 
     def get_week_day(date):
         week_day_dict = {
@@ -106,13 +106,20 @@ def list_ys():
 
     # Wtdel.creat_time >= zeroToday and Wtdel.creat_time<=now
 
+
+
     page = request.args.get('page', 1, type=int)
-    pagination = db.session.query(Wtdel).filter(and_(Wtdel.creat_time >= lastToday  , Wtdel.creat_time<now)).order_by(Wtdel.creat_time.desc()).paginate(
+
+    pagination = db.session.query(Wtdel,Watcher.watchername,Watcher.id,Watcher.watcherserverip,Watcher.watcherip).outerjoin(Watcher,Watcher.id == Wtdel.watcher_id ).filter(and_(Wtdel.creat_time >= lastToday  , Wtdel.creat_time<now)).order_by(Wtdel.creat_time.desc()).paginate(
         page, per_page=current_app.config['FLASKY_POSTS_PER_PAGE'],
         error_out=False)
+
+    # pagination = db.session.query(Wtdel).filter(and_(Wtdel.creat_time >= lastToday  , Wtdel.creat_time<now)).order_by(Wtdel.creat_time.desc()).paginate(
+    #     page, per_page=current_app.config['FLASKY_POSTS_PER_PAGE'],
+    #     error_out=False)
     posts = pagination.items
 
-    listsize = len(posts)
+    listsize = pagination.total
 
     def get_week_day(date):
         week_day_dict = {
@@ -128,8 +135,9 @@ def list_ys():
         return week_day_dict[day]
 
     for key in posts:
-        key.week = get_week_day(key.creat_time)
-        key.creat_time = key.creat_time.strftime("%Y-%m-%d")
+        key.Wtdel.week = get_week_day(key.Wtdel.creat_time)
+        key.Wtdel.creat_time = key.Wtdel.creat_time.strftime("%Y-%m-%d")
+
 
     return render_template('tianwang/rclist.html',posts=posts,pagination=pagination,listsize=listsize)
 

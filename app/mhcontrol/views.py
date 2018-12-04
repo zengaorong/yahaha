@@ -51,7 +51,7 @@ def manhualist():
         error_out=False)
     posts = pagination.items
 
-    listsize = len(posts)
+    listsize = pagination.total
     return render_template('mhcontrol/list.html',posts=posts,pagination=pagination,listsize=listsize)
 
 

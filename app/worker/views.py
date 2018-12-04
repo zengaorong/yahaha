@@ -95,7 +95,7 @@ def loglist():
         error_out=False)
     posts = pagination.items
 
-    listsize = len(posts)
+    listsize = pagination.total
 
     def get_week_day(date):
         week_day_dict = {

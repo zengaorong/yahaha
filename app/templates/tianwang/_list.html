@@ -87,17 +87,21 @@
                         <th>开始时间</th>
                         <th>开始星期</th>
                         <th>故障原因</th>
+                        <th>服务器IP</th>
+                        <th>球机IP</th>
                         <th>操作</th>
                     </tr>
                     {% for post in posts %}
 
                         <tr>
-                            <td style="max-width: 10px">{{ loop.index }}</td>
-                            <td style="max-width: 10px">{{ post.id }}</td>
+                            <td style="max-width: 5px">{{ loop.index }}</td>
+                            <td style="max-width: 20px">{{ post.id }}</td>
                             <td style="max-width: 150px">{{ post.watchername }}</td>
                             <td>{{ post.Wterror.creat_time  }}</td>
                             <td >{{ post.Wterror.week  }}</td>
-                            <td style="max-width: 300px;overflow: hidden; text-overflow:ellipsis;white-space: nowrap">{{ post.Wterror.work_for  }}</td>
+                            <td style="max-width: 200px;overflow: hidden; text-overflow:ellipsis;white-space: nowrap">{{ post.Wterror.work_for  }}</td>
+                            <td >{{ post.watcherserverip  }}</td>
+                            <td >{{ post.watcherip  }}</td>
                             <td class="last">
                                 <a href="/tianwang/logbook_today?id={{ post.Wterror.id }}&logbookid={{ post.id }}">修改 </a>
                                 <a href="/tianwang/delete?id={{ post.Wterror.id }}" onclick="javascript:return del();">修复</a>

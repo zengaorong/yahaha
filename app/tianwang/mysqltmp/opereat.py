@@ -123,5 +123,3 @@ def print_out_month_table(time):
     print month_time + onemonth
     # onesecond = timedelta(seconds=1)
     # print type(month_time-onesecond)
-
-print_out_month_table("2018-12")

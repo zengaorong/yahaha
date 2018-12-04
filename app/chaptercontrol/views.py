@@ -39,7 +39,7 @@ def chapterlist():
 
 
 
-    listsize = len(posts)
+    listsize = pagination.total
     return render_template('chaptercontrol/chapterlist.html',posts=posts,pagination=pagination,listsize=listsize,mhid=mhid)
 
 
