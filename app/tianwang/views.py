@@ -38,7 +38,7 @@ def list():
 
     for key in posts:
         key.Wterror.week = get_week_day(key.Wterror.creat_time)
-        key.Wterror.creat_time = key.Wterror.creat_time.strftime("%Y-%m-%d")
+        key.Wterror.creat_time = key.Wterror.creat_time.strftime("%Y-%m-%d %H:%M:%S")
 
     return render_template('tianwang/list.html',posts=posts,pagination=pagination,listsize=listsize)
 
@@ -87,7 +87,8 @@ def savelog():
 
 @tianwang.route('/list_ys', methods=['GET'])
 def list_ys():
-    dt = datetime.today()
+    dt = datetime.today().strftime( '%Y-%m-%d' )
+    dt = datetime.strptime(dt,'%Y-%m-%d')
     oneday = timedelta(days=1)
     yesterday = dt-oneday
     time = yesterday.strftime( '%Y-%m-%d %H:%M:%S' )
@@ -110,7 +111,7 @@ def list_ys():
 
     page = request.args.get('page', 1, type=int)
 
-    pagination = db.session.query(Wtdel,Watcher.watchername,Watcher.id,Watcher.watcherserverip,Watcher.watcherip).outerjoin(Watcher,Watcher.id == Wtdel.watcher_id ).filter(and_(Wtdel.creat_time >= lastToday  , Wtdel.creat_time<now)).order_by(Wtdel.creat_time.desc()).paginate(
+    pagination = db.session.query(Wtdel,Watcher.watchername,Watcher.id,Watcher.watcherserverip,Watcher.watcherip).outerjoin(Watcher,Watcher.id == Wtdel.watcher_id ).filter(and_(Wtdel.creat_time >= lastToday  , Wtdel.creat_time<zeroToday)).order_by(Wtdel.creat_time.desc()).paginate(
         page, per_page=current_app.config['FLASKY_POSTS_PER_PAGE'],
         error_out=False)
 
@@ -136,7 +137,7 @@ def list_ys():
 
     for key in posts:
         key.Wtdel.week = get_week_day(key.Wtdel.creat_time)
-        key.Wtdel.creat_time = key.Wtdel.creat_time.strftime("%Y-%m-%d")
+        key.Wtdel.creat_time = key.Wtdel.creat_time.strftime("%Y-%m-%d %H:%M:%S")
 
 
     return render_template('tianwang/rclist.html',posts=posts,pagination=pagination,listsize=listsize)

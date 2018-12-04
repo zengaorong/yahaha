@@ -70,7 +70,7 @@ def delete_wterror_todb(watcher_id):
     sql_str = 'select * from  wterror where watcher_id="%s"'%watcher_id
     del_data = cur.execute(sql_str)
     del_data_tuple = cur.fetchmany(del_data)
-    sql_str = '''insert into wtdel(id,watcher_id,creat_time,updata_time,work_for,erro_type,log_type,del_type)values("%s","%s","%s","%s","%s","%s","%s","%s")'''%(del_data_tuple[0][0],del_data_tuple[0][1],del_data_tuple[0][2],del_data_tuple[0][3],del_data_tuple[0][4],del_data_tuple[0][5],del_data_tuple[0][6],del_data_tuple[0][7])
+    sql_str = '''insert into wtdel(id,watcher_id,creat_time,updata_time,work_for,erro_type,log_type,del_type)values("%s","%s","%s","%s","%s","%s","%s","%s")'''%(del_data_tuple[0][0],del_data_tuple[0][1],del_data_tuple[0][2],datetime.now(),del_data_tuple[0][4],del_data_tuple[0][5],del_data_tuple[0][6],del_data_tuple[0][7])
     cur.execute(sql_str)
 
     sql_str = 'delete from  wterror where watcher_id="%s"'%watcher_id
