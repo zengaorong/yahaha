@@ -52,5 +52,19 @@ class Wtdel(db.Model):
     def __repr__(self):
         return '<Watcher %r>' % self.watchername
 
+#  物资使用情况表 材料类别（光分插片 服务器 光猫 球机 电缆） （更换） 该表对应故障表 使用故障条目的时间  修复描述 说明
+class Wtdel(db.Model):
+    __tablename__ = 'wtdel'
+    id = db.Column(db.VARCHAR(36), primary_key=True)
+    watcher_id = db.Column(db.VARCHAR(36),db.ForeignKey('watcher.id'))
+    creat_time = db.Column(db.DATETIME)
+    updata_time = db.Column(db.DATETIME)
+    work_for = db.Column(db.String(1024))
+    erro_type = db.Column(db.VARCHAR(5))
+    log_type = db.Column(db.VARCHAR(1))
+    del_type = db.Column(db.VARCHAR(1))
+    def __repr__(self):
+        return '<Watcher %r>' % self.watchername
+
 db.create_all()
 db.session.commit()

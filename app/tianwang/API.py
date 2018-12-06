@@ -1,35 +1,36 @@
 #coding=utf-8
-import requests
+import xlwt
+import MySQLdb
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
-'''
-GET https://172.22.182.169/cas/login HTTP/1.1
-Host: 172.22.182.169
-Connection: keep-alive
-Cache-Control: max-age=0
-Upgrade-Insecure-Requests: 1
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
-Accept-Encoding: gzip, deflate, br
-Accept-Language: zh-CN,zh;q=0.9
-Cookie: remember=admin; JSESSIONID=A25721A6DB26E78189061FCDDD720776; alarmDialog_admin=ON; alarmVoice_admin=ON
-'''
+conn=MySQLdb.connect(host='localhost',user='root',passwd='7monthdleo',db='leodb',charset='utf8')
+cursor=conn.cursor()
+count = cursor.execute('select * from Wtdel')
+print 'has %s record' % count
+#重置游标位置
+cursor.scroll(0,mode='absolute')
+#搜取所有结果
+results = cursor.fetchall()
 
-head={
-    'Content-Type': 'application/x-www-form-urlencoded',
-    'User-Agent' : 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36',
-    'Connection': 'keep-alive',
-    'Upgrade-Insecure-Requests': '1',
-    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
-    'Cookie' : 'remember=admin; JSESSIONID=A25721A6DB26E78189061FCDDD720776; _safe_license=true; alarmDialog_admin=ON; alarmVoice_admin=ON',
-    'Host' : '172.22.182.169'
-}
+# names = cursor.execute('select * from Wtdel')
+# info = cursor.fetchmany(names)
+# print info
 
-proxies = {
-    "https":"https://172.0.0.1:8088",
-    "http":"http://172.0.0.1:8088",
-}
-
-url = "http://172.22.182.169:443/cas/login"
-respons = requests.get(url,headers=head)
-print respons.text
-
+#print results
+#测试代码，print results
+#获取MYSQL里的数据字段
+fields = cursor.description
+#将字段写入到EXCEL新表的第一行
+wbk = xlwt.Workbook()
+sheet = wbk.add_sheet('test1',cell_overwrite_ok=True)
+for ifs in range(0,len(fields)):
+    sheet.write(0,ifs,fields[ifs][0])
+ics=1
+jcs=0
+for ics in range(1,len(results)+1):
+    for jcs in range(0,len(fields)):
+        sheet.write(ics,jcs,results[ics-1][jcs])
+    #break
+wbk.save('test4.xlsx')
