@@ -111,7 +111,7 @@ def list_ys():
 
     page = request.args.get('page', 1, type=int)
 
-    pagination = db.session.query(Wtdel,Watcher.watchername,Watcher.id,Watcher.watcherserverip,Watcher.watcherip).outerjoin(Watcher,Watcher.id == Wtdel.watcher_id ).filter(and_(Wtdel.creat_time >= lastToday  , Wtdel.creat_time<zeroToday)).order_by(Wtdel.creat_time.desc()).paginate(
+    pagination = db.session.query(Wtdel,Watcher.watchername,Watcher.id,Watcher.watcherserverip,Watcher.watcherip).outerjoin(Watcher,Watcher.id == Wtdel.watcher_id ).filter(and_(Wtdel.updata_time >= lastToday  , Wtdel.updata_time<zeroToday)).order_by(Wtdel.updata_time.desc()).paginate(
         page, per_page=current_app.config['FLASKY_POSTS_PER_PAGE'],
         error_out=False)
 
@@ -141,4 +141,10 @@ def list_ys():
 
 
     return render_template('tianwang/rclist.html',posts=posts,pagination=pagination,listsize=listsize)
+
+
+
+@tianwang.route('/test',methods=['GET', 'POST'])
+def test():
+    return render_template('tianwang/test.html')
 
