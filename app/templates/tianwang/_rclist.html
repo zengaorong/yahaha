@@ -117,6 +117,7 @@
                     <tr>
                         <th>序号</th>
                         <th>编号</th>
+                        <th>乡镇</th>
                         <th>名称</th>
                         <th>修复时间</th>
                         <th>开始时间</th>
@@ -130,6 +131,7 @@
                         <tr>
                             <td style="max-width: 10px">{{ loop.index }}</td>
                             <td style="max-width: 10px">{{ post.id }}</td>
+                            <td style="max-width: 10px">{{ post.watchertown }}</td>
                             <td style="max-width: 150px">{{ post.watchername }}</td>
                             <td>{{ post.Wtdel.updata_time  }}</td>
                             <td>{{ post.Wtdel.creat_time  }}</td>

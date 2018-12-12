@@ -1,3 +1,4 @@
+#coding=utf-8
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
@@ -52,19 +53,19 @@ class Wtdel(db.Model):
     def __repr__(self):
         return '<Watcher %r>' % self.watchername
 
-#  物资使用情况表 材料类别（光分插片 服务器 光猫 球机 电缆） （更换） 该表对应故障表 使用故障条目的时间  修复描述 说明
-class Wtdel(db.Model):
-    __tablename__ = 'wtdel'
+#  维护清单 物资使用情况表 材料类别（光分插片 服务器 光猫 球机 电缆） （更换） 该表对应故障表 使用故障条目的时间  修复描述 说明
+#  目前 tpye = 1 光猫 2 服务器 3 球机 4 电表 5 缆 6 其他物品
+class Maintenance(db.Model):
+    __tablename__ = 'Mainten'
     id = db.Column(db.VARCHAR(36), primary_key=True)
-    watcher_id = db.Column(db.VARCHAR(36),db.ForeignKey('watcher.id'))
-    creat_time = db.Column(db.DATETIME)
+    wterror_id = db.Column(db.VARCHAR(36),db.ForeignKey('wterror.id'))
     updata_time = db.Column(db.DATETIME)
     work_for = db.Column(db.String(1024))
-    erro_type = db.Column(db.VARCHAR(5))
-    log_type = db.Column(db.VARCHAR(1))
+    change_type = db.Column(db.VARCHAR(5))
+    describe = db.Column(db.String(255))
     del_type = db.Column(db.VARCHAR(1))
     def __repr__(self):
-        return '<Watcher %r>' % self.watchername
+        return '<Mainten %r>' % self.Mainten
 
 db.create_all()
 db.session.commit()
