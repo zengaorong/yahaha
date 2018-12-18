@@ -6,6 +6,7 @@ from flask import render_template,request,redirect,url_for,current_app
 from . import tianwang
 from ..models import Wterror,Watcher,Wtdel
 from .. import db
+from .forms import RegistrationForm
 from sqlalchemy import and_
 
 
@@ -115,6 +116,8 @@ def list_ys():
         page, per_page=current_app.config['FLASKY_POSTS_PER_PAGE'],
         error_out=False)
 
+    print db.session.query(Wtdel,Watcher.watchername,Watcher.id,Watcher.watcherserverip,Watcher.watcherip,Watcher.watchertown ).outerjoin(Watcher,Watcher.id == Wtdel.watcher_id).filter(and_(Wtdel.updata_time >= lastToday  , Wtdel.updata_time<zeroToday)).order_by(Wtdel.updata_time.desc())
+
     # pagination = db.session.query(Wtdel).filter(and_(Wtdel.creat_time >= lastToday  , Wtdel.creat_time<now)).order_by(Wtdel.creat_time.desc()).paginate(
     #     page, per_page=current_app.config['FLASKY_POSTS_PER_PAGE'],
     #     error_out=False)
@@ -148,3 +151,20 @@ def list_ys():
 def test():
     return render_template('tianwang/test.html')
 
+
+@tianwang.route('/register', methods=['GET', 'POST'])
+def register():
+    form = RegistrationForm()
+    # if form.validate_on_submit():
+    #     user = User(email=form.email.data,
+    #                 username=form.username.data,
+    #                 password=form.password.data)
+    #     db.session.add(user)
+    #     db.session.commit()
+    #     token = user.generate_confirmation_token()
+    #     send_email(user.email, 'Confirm Your Account',
+    #                'auth/email/confirm', user=user, token=token)
+    #     flash('A confirmation email has been sent to you by email.')
+    #     return redirect(url_for('auth.login'))
+    #return render_template('tianwang/register.html', form=form)
+    return form
