@@ -74,43 +74,19 @@ class Chapter(db.Model):
     def __repr__(self):
         return '<mhchapter %r>' % self.chapter_name
 
-
-# class NameForm(FlaskForm):
-#     name = StringField('What is your name?', validators=[DataRequired()])
-#     submit = SubmitField('Submit')
-#
-#
-# @app.shell_context_processor
-# def make_shell_context():
-#     return dict(db=db, User=User, Role=Role)
-#
-#
-# @app.errorhandler(404)
-# def page_not_found(e):
-#     return render_template('404.html'), 404
-#
-#
-# @app.errorhandler(500)
-# def internal_server_error(e):
-#     return render_template('500.html'), 500
-#
-#
-# @app.route('/', methods=['GET', 'POST'])
-# def index():
-#     form = NameForm()
-#     if form.validate_on_submit():
-#         user = User.query.filter_by(username=form.name.data).first()
-#         if user is None:
-#             user = User(username=form.name.data)
-#             db.session.add(user)
-#             db.session.commit()
-#             session['known'] = False
-#         else:
-#             session['known'] = True
-#         session['name'] = form.name.data
-#         return redirect(url_for('index'))
-#     return render_template('index.html', form=form, name=session.get('name'),
-#                            known=session.get('known', False))
+#  维护清单 物资使用情况表 材料类别（光分插片 服务器 光猫 球机 电缆） （更换） 该表对应故障表 使用故障条目的时间  修复描述 说明
+#  目前 tpye = 1 光猫 2 服务器 3 球机 4 电表 5 缆 6 其他物品
+class Maintenance(db.Model):
+    __tablename__ = 'Mainten'
+    id = db.Column(db.VARCHAR(36), primary_key=True)
+    wterror_id = db.Column(db.VARCHAR(36),db.ForeignKey('wterror.id'))
+    updata_time = db.Column(db.DATETIME)
+    work_for = db.Column(db.String(1024))
+    mainten_type = db.Column(db.VARCHAR(5))
+    describe = db.Column(db.String(255))
+    del_type = db.Column(db.VARCHAR(1))
+    def __repr__(self):
+        return '<Mainten %r>' % self.Mainten
 
 
 db.create_all()

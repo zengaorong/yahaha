@@ -61,7 +61,7 @@ class Maintenance(db.Model):
     wterror_id = db.Column(db.VARCHAR(36),db.ForeignKey('wterror.id'))
     updata_time = db.Column(db.DATETIME)
     work_for = db.Column(db.String(1024))
-    change_type = db.Column(db.VARCHAR(5))
+    mainten_type = db.Column(db.VARCHAR(5))
     describe = db.Column(db.String(255))
     del_type = db.Column(db.VARCHAR(1))
     def __repr__(self):
