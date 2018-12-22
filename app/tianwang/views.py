@@ -2,12 +2,13 @@
 import sys
 import uuid
 from datetime import  datetime,timedelta
-from flask import render_template,request,redirect,url_for,current_app
+from flask import render_template,request,redirect,url_for,current_app,jsonify
 from . import tianwang
 from ..models import Wterror,Watcher,Wtdel,Maintenance
 from .. import db
 from .forms import MaintenForm
 from sqlalchemy import and_
+from .mysqltmp.fastping import run_fastping
 
 
 reload(sys)
@@ -43,11 +44,16 @@ def list():
         key.Wterror.creat_time = key.Wterror.creat_time.strftime("%Y-%m-%d %H:%M:%S")
         wtdel = Wtdel.query.filter_by(watcher_id=key.id).order_by(Wtdel.updata_time.desc()).first()
         if wtdel!=None:
-            key.Wterror.wtdeltime = wtdel.updata_time
+            key.Wterror.wtdeltime = wtdel.creat_time
         else:
             key.Wterror.wtdeltime = "暂无数据"
 
-    return render_template('tianwang/list.html',posts=posts,pagination=pagination,listsize=listsize)
+    # 获取最后更新时间
+    with open("app/tianwang/mysqltmp/log.txt",'r') as f:
+        time_list = f.readlines()
+        print time_list[-1]
+
+    return render_template('tianwang/list.html',posts=posts,pagination=pagination,listsize=listsize,last_flush_time = time_list[-1].replace('\n',""))
 
 # 删除日志
 @tianwang.route('/delete',methods=['get'])
@@ -206,3 +212,18 @@ def register():
         db.session.commit()
         return redirect(url_for('auth.login'))
     return render_template('tianwang/register.html', form=form)
+
+@tianwang.route('/reflush', methods=['GET', 'POST'])
+def reflush():
+    run_fastping("app/tianwang/mysqltmp/安福天网汇总.xls")
+
+    # with open("app/tianwang/mysqltmp/out.txt",'r') as f:
+    #     print f
+    # with open("./tianwang/mysqltmp/out.txt",'r') as f:
+    #     print f
+    return jsonify(result = "ok")
+
+@tianwang.route('/flush_data', methods=['GET', 'POST'])
+def flush_data():
+    return render_template('tianwang/flush.html')
+

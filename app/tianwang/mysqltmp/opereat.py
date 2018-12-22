@@ -35,9 +35,7 @@ def updata_watch_todb(nums,error_for):
         time = dt.strftime( '%Y-%m-%d %H:%M:%S' )
         # (uuid.uuid1(),temp_tuple[0],time,time,"123456","0","0","0")
         sql_str = '''insert into wterror(id,watcher_id,creat_time,updata_time,work_for,erro_type,log_type,del_type)values("%s","%s","%s","%s","%s","%s","%s","%s")'''%(uuid.uuid1(),temp_tuple[0],time,time,error_for,"0","0","0")
-        print sql_str
         names = cur.execute(sql_str)
-        print names
     conn.commit()
     conn.close()
 
@@ -139,4 +137,4 @@ def print_out_month_table():
     # onesecond = timedelta(seconds=1)
     # print type(month_time-onesecond)
 
-print_out_month_table()
+#print_out_month_table()
