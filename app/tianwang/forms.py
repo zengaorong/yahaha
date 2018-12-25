@@ -21,3 +21,9 @@ class MaintenForm(FlaskForm):
         DataRequired(), Length(1, 255),])
     submit = SubmitField('提交')
 
+class PoliceforForm(FlaskForm):
+    work_for = StringField('维护要求', validators=[
+        DataRequired(), Length(1, 1024),])
+    over_for = StringField('维护情况记录', validators=[
+        DataRequired(), Length(1, 255),])
+    submit = SubmitField('提交')

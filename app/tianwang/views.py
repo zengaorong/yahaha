@@ -4,9 +4,9 @@ import uuid
 from datetime import  datetime,timedelta
 from flask import render_template,request,redirect,url_for,current_app,jsonify
 from . import tianwang
-from ..models import Wterror,Watcher,Wtdel,Maintenance
+from ..models import Wterror,Watcher,Wtdel,Maintenance,Policefor
 from .. import db
-from .forms import MaintenForm
+from .forms import MaintenForm,PoliceforForm
 from sqlalchemy import and_
 from .mysqltmp.fastping import run_fastping
 
@@ -226,4 +226,15 @@ def reflush():
 @tianwang.route('/flush_data', methods=['GET', 'POST'])
 def flush_data():
     return render_template('tianwang/flush.html')
+
+@tianwang.route('/policefor', methods=['GET', 'POST'])
+def policefor():
+    form = PoliceforForm()
+    if form.validate_on_submit():
+        policefor = Policefor(work_for=form.work_for.data,
+                              over_for=form.over_for.data,)
+        db.session.add(policefor)
+        db.session.commit()
+        return "add success"
+    return render_template('tianwang/register.html', form=form)
 
