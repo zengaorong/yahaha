@@ -98,13 +98,13 @@
                 <h2>日志列表
                     <a href="/tianwang/list">故障列表</a>
 
-                    <div id="demo">
-                        <div class="wrapper">
-                            <h3>请输入漫画名称</h3>
-                            <div id="search-form"></div>
-                            <div id="message"></div>
-                        </div>
-                    </div>
+{#                    <div id="demo">#}
+{#                        <div class="wrapper">#}
+{#                            <h3>请输入漫画名称</h3>#}
+{#                            <div id="search-form"></div>#}
+{#                            <div id="message"></div>#}
+{#                        </div>#}
+{#                    </div>#}
 
                 </h2>
 
@@ -125,13 +125,14 @@
                         <th>故障原因</th>
                         <th>服务器IP</th>
                         <th>球机IP</th>
+                        <th>操作</th>
                     </tr>
                     {% for post in posts %}
 
                         <tr>
                             <td style="max-width: 10px">{{ loop.index }}</td>
                             <td style="max-width: 10px">{{ post.id }}</td>
-                            <td style="max-width: 10px">{{ post.watchertown }}</td>
+                            <td style="max-width: 40px">{{ post.watchertown }}</td>
                             <td style="max-width: 150px">{{ post.watchername }}</td>
                             <td>{{ post.Wtdel.updata_time  }}</td>
                             <td>{{ post.Wtdel.creat_time  }}</td>
@@ -139,6 +140,9 @@
                             <td style="max-width: 300px;overflow: hidden; text-overflow:ellipsis;white-space: nowrap">{{ post.Wtdel.work_for  }}</td>
                             <td >{{ post.watcherserverip  }}</td>
                             <td >{{ post.watcherip  }}</td>
+                            <td class="last">
+                                <a href="">添加维修记录</a>
+                            </td>
                         </tr>
                     {% endfor %}
 

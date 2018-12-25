@@ -1,3 +1,4 @@
+#coding=utf-8
 from werkzeug.security import generate_password_hash, check_password_hash
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask import current_app
@@ -150,7 +151,34 @@ class Wtdel(db.Model):
     log_type = db.Column(db.VARCHAR(1))
     del_type = db.Column(db.VARCHAR(1))
     def __repr__(self):
-        return '<Watcher %r>' % self.watchername
+        return '<wtdel %r>' % self.watcher_id
+
+#  维护清单 物资使用情况表 材料类别（光分插片 服务器 光猫 球机 电缆） （更换） 该表对应故障表 使用故障条目的时间  修复描述 说明
+#  目前 tpye = 1 光猫 2 服务器 3 球机 4 电表 5 缆 6 其他物品
+class Maintenance(db.Model):
+    __tablename__ = 'Mainten'
+    id = db.Column(db.VARCHAR(36), primary_key=True)
+    wterror_id = db.Column(db.VARCHAR(36),db.ForeignKey('wterror.id'))
+    updata_time = db.Column(db.DATETIME)
+    work_for = db.Column(db.String(1024))
+    mainten_type = db.Column(db.VARCHAR(5))
+    describe = db.Column(db.String(255))
+    del_type = db.Column(db.VARCHAR(1))
+    def __repr__(self):
+        return '<Mainten %r>' % self.Mainten
+
+#  记录公安球机清洗 故障等杂乱要求
+#  id 创建时间 完成时间 内容 完成情况
+class Policefor(db.Model):
+    __tablename__ = 'policefor'
+    id = db.Column(db.Integer, primary_key=True,autoincrement=True)
+    creat_time = db.Column(db.DATETIME)
+    end_time = db.Column(db.DATETIME)
+    work_for = db.Column(db.String(1024))
+    over_for = db.Column(db.String(1024))
+    del_type = db.Column(db.VARCHAR(1))
+    def __repr__(self):
+        return '<policefor %r>' % self.id
 
 @login_manager.user_loader
 def load_user(user_id):

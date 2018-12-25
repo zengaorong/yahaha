@@ -11,7 +11,7 @@ from opereat import updata_watch_todb,select_wterror,delete_wterror_todb,delete_
 
 import subprocess
 
-dic2 = readexcel_todict("app/tianwang/mysqltmp/安福天网汇总.xls".encode('GBK'),1,1,1)
+dic2 = readexcel_todict("安福天网汇总.xls".encode('GBK'),1,1,1)
 
 def check_is_nums(str_check):
     isnum = True
@@ -153,10 +153,6 @@ def run_fastping(file_url):
     else:
         dic1 = readexcel_todict("app/tianwang/mysqltmp/安福天网汇总.xls".encode('GBK'),1,1,0)
         down_data(dic1)
-        starttime = datetime.datetime.now()
-
-        with open("app/tianwang/mysqltmp/log.txt","a+") as f:
-            f.writelines(starttime.strftime( '%Y-%m-%d %H:%M:%S\n' ))
 
 
 if __name__ == '__main__':

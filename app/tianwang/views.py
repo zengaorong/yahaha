@@ -2,11 +2,13 @@
 import sys
 import uuid
 from datetime import  datetime,timedelta
-from flask import render_template,request,redirect,url_for,current_app
+from flask import render_template,request,redirect,url_for,current_app,jsonify
 from . import tianwang
-from ..models import Wterror,Watcher,Wtdel
+from ..models import Wterror,Watcher,Wtdel,Maintenance,Policefor
 from .. import db
+from .forms import MaintenForm,PoliceforForm
 from sqlalchemy import and_
+from .mysqltmp.fastping import run_fastping
 
 
 reload(sys)
@@ -20,6 +22,7 @@ def list():
         page, per_page=current_app.config['FLASKY_POSTS_PER_PAGE'],
         error_out=False)
     posts = pagination.items
+
 
     listsize = pagination.total
 
@@ -39,8 +42,18 @@ def list():
     for key in posts:
         key.Wterror.week = get_week_day(key.Wterror.creat_time)
         key.Wterror.creat_time = key.Wterror.creat_time.strftime("%Y-%m-%d %H:%M:%S")
+        wtdel = Wtdel.query.filter_by(watcher_id=key.id).order_by(Wtdel.updata_time.desc()).first()
+        if wtdel!=None:
+            key.Wterror.wtdeltime = wtdel.creat_time
+        else:
+            key.Wterror.wtdeltime = "暂无数据"
 
-    return render_template('tianwang/list.html',posts=posts,pagination=pagination,listsize=listsize)
+    # 获取最后更新时间
+    with open("app/tianwang/mysqltmp/log.txt",'r') as f:
+        time_list = f.readlines()
+        print time_list[-1]
+
+    return render_template('tianwang/list.html',posts=posts,pagination=pagination,listsize=listsize,last_flush_time = time_list[-1].replace('\n',""))
 
 # 删除日志
 @tianwang.route('/delete',methods=['get'])
@@ -67,7 +80,8 @@ def delete():
 def logbook_today():
     id = request.args.get('id', "", type=str)
     wterror = Wterror.query.filter_by(id=id).first()
-    return render_template('tianwang/twfrom.html',wterror=wterror)
+    watcher = Watcher.query.filter_by(id=wterror.watcher_id).first()
+    return render_template('tianwang/twfrom.html',wterror=wterror,watcher=watcher)
 
 # 故障保存
 @tianwang.route('/savelog', methods=['POST'])
@@ -84,7 +98,7 @@ def savelog():
     return '''<h1>数据错误<h1> <a href="/tianwang/logbook_today?id=%s">返回</a>''' %(id)
 
 
-
+# 今日恢复
 @tianwang.route('/list_ys', methods=['GET'])
 def list_ys():
     dt = datetime.today().strftime( '%Y-%m-%d' )
@@ -115,6 +129,8 @@ def list_ys():
         page, per_page=current_app.config['FLASKY_POSTS_PER_PAGE'],
         error_out=False)
 
+    print db.session.query(Wtdel,Watcher.watchername,Watcher.id,Watcher.watcherserverip,Watcher.watcherip,Watcher.watchertown ).outerjoin(Watcher,Watcher.id == Wtdel.watcher_id).filter(and_(Wtdel.updata_time >= lastToday  , Wtdel.updata_time<zeroToday)).order_by(Wtdel.updata_time.desc())
+
     # pagination = db.session.query(Wtdel).filter(and_(Wtdel.creat_time >= lastToday  , Wtdel.creat_time<now)).order_by(Wtdel.creat_time.desc()).paginate(
     #     page, per_page=current_app.config['FLASKY_POSTS_PER_PAGE'],
     #     error_out=False)
@@ -143,8 +159,82 @@ def list_ys():
     return render_template('tianwang/rclist.html',posts=posts,pagination=pagination,listsize=listsize)
 
 
+@tianwang.route('/list_td', methods=['GET'])
+def list_td():
+    dt = datetime.today().strftime( '%Y-%m-%d' )
+    # 获取当前时间
+    now = datetime.now()
+
+    page = request.args.get('page', 1, type=int)
+    pagination = db.session.query(Wtdel,Watcher.watchername,Watcher.id,Watcher.watcherserverip,Watcher.watcherip,Watcher.watchertown ).outerjoin(Watcher,Watcher.id == Wtdel.watcher_id).filter(and_(Wtdel.updata_time >= dt  , Wtdel.updata_time<now)).order_by(Wtdel.updata_time.desc()).paginate(
+        page, per_page=current_app.config['FLASKY_POSTS_PER_PAGE'],
+        error_out=False)
+    # pagination = db.session.query(Wtdel).filter(and_(Wtdel.creat_time >= lastToday  , Wtdel.creat_time<now)).order_by(Wtdel.creat_time.desc()).paginate(
+    #     page, per_page=current_app.config['FLASKY_POSTS_PER_PAGE'],
+    #     error_out=False)
+    posts = pagination.items
+    listsize = pagination.total
+    def get_week_day(date):
+        week_day_dict = {
+            0 : '星期一',
+            1 : '星期二',
+            2 : '星期三',
+            3 : '星期四',
+            4 : '星期五',
+            5 : '星期六',
+            6 : '星期天',
+        }
+        day = date.weekday()
+        return week_day_dict[day]
+
+    for key in posts:
+        key.Wtdel.week = get_week_day(key.Wtdel.creat_time)
+        key.Wtdel.creat_time = key.Wtdel.creat_time.strftime("%Y-%m-%d %H:%M:%S")
+
+
+    return render_template('tianwang/tdlist.html',posts=posts,pagination=pagination,listsize=listsize)
+
+
 
 @tianwang.route('/test',methods=['GET', 'POST'])
 def test():
     return render_template('tianwang/test.html')
+
+
+@tianwang.route('/register', methods=['GET', 'POST'])
+def register():
+    form = MaintenForm()
+    if form.validate_on_submit():
+        maintenance = Maintenance(work_for=form.work_for.data,
+                           select_mainten_type=form.select_mainten_type.data,
+                           describe=form.describe.data)
+        db.session.add(maintenance)
+        db.session.commit()
+        return redirect(url_for('auth.login'))
+    return render_template('tianwang/register.html', form=form)
+
+@tianwang.route('/reflush', methods=['GET', 'POST'])
+def reflush():
+    run_fastping("app/tianwang/mysqltmp/安福天网汇总.xls")
+
+    # with open("app/tianwang/mysqltmp/out.txt",'r') as f:
+    #     print f
+    # with open("./tianwang/mysqltmp/out.txt",'r') as f:
+    #     print f
+    return jsonify(result = "ok")
+
+@tianwang.route('/flush_data', methods=['GET', 'POST'])
+def flush_data():
+    return render_template('tianwang/flush.html')
+
+@tianwang.route('/policefor', methods=['GET', 'POST'])
+def policefor():
+    form = PoliceforForm()
+    if form.validate_on_submit():
+        policefor = Policefor(work_for=form.work_for.data,
+                              over_for=form.over_for.data,)
+        db.session.add(policefor)
+        db.session.commit()
+        return "add success"
+    return render_template('tianwang/register.html', form=form)
 

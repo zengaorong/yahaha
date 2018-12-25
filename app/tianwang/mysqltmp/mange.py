@@ -61,11 +61,31 @@ class Maintenance(db.Model):
     wterror_id = db.Column(db.VARCHAR(36),db.ForeignKey('wterror.id'))
     updata_time = db.Column(db.DATETIME)
     work_for = db.Column(db.String(1024))
-    change_type = db.Column(db.VARCHAR(5))
+    mainten_type = db.Column(db.VARCHAR(5))
     describe = db.Column(db.String(255))
     del_type = db.Column(db.VARCHAR(1))
     def __repr__(self):
         return '<Mainten %r>' % self.Mainten
+
+#  记录公安球机清洗 故障等杂乱要求
+#  id 创建时间 完成时间 内容 完成情况
+class Policefor(db.Model):
+    __tablename__ = 'policefor'
+    id = db.Column(db.Integer, primary_key=True,autoincrement=True)
+    creat_time = db.Column(db.DATETIME)
+    end_time = db.Column(db.DATETIME)
+    work_for = db.Column(db.String(1024))
+    over_for = db.Column(db.String(1024))
+    del_type = db.Column(db.VARCHAR(1))
+    def __repr__(self):
+        return '<policefor %r>' % self.id
+
+class Role(db.Model):
+    __tablename__ = 'roles'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), unique=True)
+    default = db.Column(db.Boolean, default=False, index=True)
+    permissions = db.Column(db.Integer)
 
 db.create_all()
 db.session.commit()
