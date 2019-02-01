@@ -68,19 +68,28 @@
         <!-- MainForm -->
         <div id="MainForm">
             <div class="form_boxB">
-                <h2>日志列表
-                    <a href="/tianwang/list_ys">昨日恢复</a>
-                    <a href="/tianwang/list_td">今日恢复</a>
-                    <a href="/worker/index/{{ id }}">生成月报</a>
-                    <a href="/tianwang/flush_data">立即更新</a>
-                    <a>
-                        最后更新时间{{ last_flush_time }}
-                    </a>
-{#                    <a href="/tianwang/policelist">公安要求记录</a>#}
-                    <a href="/tianwang/details">天网信息记录</a>
+                <h2>
+                    <a href="/tianwang/list">日志列表</a>
+                    IP列表
+                    <a href="/myflask/editpu/overlist">杂项记录</a>
                 </h2>
 
+                <h2>
+                    <form class="form-horizontal" role="form" id="loginForm" method="post" action="{{url_for('tianwang.details')}}">
+                        <div class="form-group">
+                            <div class="col-sm-7">
+                                {{form.qu_name.label}}{{ form.qu_name }}
+                                {{form.position_name.label}}{{ form.position_name }}
+                                {{form.submit}}
 
+                            </div>
+                        </div>
+                    </form>
+                </h2>
+                <h2>
+                    城区IP已经使用到{{ cityIP }} | 乡镇IP已经使用到{{ townIP }}
+                    <button onclick="editip()">更改</button>
+                </h2>
 
 
                 <table cellpadding="0" cellspacing="0">
@@ -89,33 +98,21 @@
                     </tr>
                     <tr>
                         <th>序号</th>
-                        <th>编号</th>
-                        <th>乡镇</th>
-                        <th>名称</th>
-                        <th>开始时间</th>
-                        <th>开始星期</th>
-                        <th>故障原因</th>
-                        <th>最近故障时间</th>
-                        <th>服务器IP</th>
-                        <th>球机IP</th>
+                        <th>IP</th>
+                        <th>使用地点</th>
+                        <th>类型</th>
                         <th>操作</th>
                     </tr>
                     {% for post in posts %}
 
                         <tr>
-                            <td style="max-width: 5px">{{ loop.index }}</td>
-                            <td style="max-width: 30px">{{ post.id }}</td>
-                            <td style="max-width: 40px">{{ post.watchertown }}</td>
-                            <td style="max-width: 150px">{{ post.watchername }}</td>
-                            <td>{{ post.Wterror.creat_time  }}</td>
-                            <td >{{ post.Wterror.week  }}</td>
-                            <td style="max-width: 200px;overflow: hidden; text-overflow:ellipsis;white-space: nowrap">{{ post.Wterror.work_for  }}</td>
-                            <td >{{ post.Wterror.wtdeltime  }}</td>
-                            <td >{{ post.watcherserverip  }}</td>
-                            <td >{{ post.watcherip  }}</td>
+                            <td >{{ loop.index }}</td>
+                            <td >{{ post.ip_str }}</td>
+                            <td>{{ post.ip_position }}</td>
+                            <td>{{ post.ip_type }}</td>
                             <td class="last">
-                                <a href="/tianwang/logbook_today?id={{ post.Wterror.id }}&logbookid={{ post.id }}">修改 </a>
-                                <a href="/tianwang/delete?id={{ post.Wterror.id }}" onclick="javascript:return del();">修复</a>
+                                <a href="/myflask/editpu/details?id={{ post.id }}">修改 </a>
+                                <a href="/myflask/editpu/details?id={{ post.id }}">删除 </a>
                             </td>
                         </tr>
                     {% endfor %}
@@ -137,13 +134,22 @@
 
 </div>
 <script>
-    function del() {
-        var msg = "您真的确定该点已经修复？\n\n请确认！";
-        if (confirm(msg)==true){
-            return true;
-        }else{
-            return false;
-        }
+    function gettask(qupu_id) {
+        post_data = {"qupu_id":qupu_id}
+        $.ajax({
+            method: "post",
+            url: '/myflask/editpu' + '/gettask',
+            async: true,
+            dataType: "json",
+            data: post_data,
+            success: function (data) {
+                window.location.reload();
+            },
+        })
+    }
+
+    function editip() {
+        window.location.href = "./editip"
     }
 </script>
 <!-- /wrap_right -->

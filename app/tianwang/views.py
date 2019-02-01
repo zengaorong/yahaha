@@ -4,11 +4,12 @@ import uuid
 from datetime import  datetime,timedelta
 from flask import render_template,request,redirect,url_for,current_app,jsonify
 from . import tianwang
-from ..models import Wterror,Watcher,Wtdel,Maintenance,Policefor
+from ..models import Wterror,Watcher,Wtdel,Maintenance,Policefor,Ipdetails,Infordetails
 from .. import db
-from .forms import MaintenForm,PoliceforForm
+from .forms import MaintenForm,PoliceforForm,select_list,IpFrom
 from sqlalchemy import and_
 from .mysqltmp.fastping import run_fastping
+import ConfigParser
 
 
 reload(sys)
@@ -164,14 +165,10 @@ def list_td():
     dt = datetime.today().strftime( '%Y-%m-%d' )
     # 获取当前时间
     now = datetime.now()
-
     page = request.args.get('page', 1, type=int)
     pagination = db.session.query(Wtdel,Watcher.watchername,Watcher.id,Watcher.watcherserverip,Watcher.watcherip,Watcher.watchertown ).outerjoin(Watcher,Watcher.id == Wtdel.watcher_id).filter(and_(Wtdel.updata_time >= dt  , Wtdel.updata_time<now)).order_by(Wtdel.updata_time.desc()).paginate(
         page, per_page=current_app.config['FLASKY_POSTS_PER_PAGE'],
         error_out=False)
-    # pagination = db.session.query(Wtdel).filter(and_(Wtdel.creat_time >= lastToday  , Wtdel.creat_time<now)).order_by(Wtdel.creat_time.desc()).paginate(
-    #     page, per_page=current_app.config['FLASKY_POSTS_PER_PAGE'],
-    #     error_out=False)
     posts = pagination.items
     listsize = pagination.total
     def get_week_day(date):
@@ -216,25 +213,131 @@ def register():
 @tianwang.route('/reflush', methods=['GET', 'POST'])
 def reflush():
     run_fastping("app/tianwang/mysqltmp/安福天网汇总.xls")
-
-    # with open("app/tianwang/mysqltmp/out.txt",'r') as f:
-    #     print f
-    # with open("./tianwang/mysqltmp/out.txt",'r') as f:
-    #     print f
     return jsonify(result = "ok")
 
 @tianwang.route('/flush_data', methods=['GET', 'POST'])
 def flush_data():
     return render_template('tianwang/flush.html')
 
-@tianwang.route('/policefor', methods=['GET', 'POST'])
-def policefor():
+@tianwang.route('/policefor/<police_for>', methods=['GET', 'POST'])
+def policefor(police_for):
     form = PoliceforForm()
     if form.validate_on_submit():
-        policefor = Policefor(work_for=form.work_for.data,
+        now_time = datetime.now()
+        policefor = Policefor(creat_time = now_time,
+                              work_for=form.work_for.data,
                               over_for=form.over_for.data,)
         db.session.add(policefor)
         db.session.commit()
         return "add success"
+    # form.over_for.data = "fjisaofjsio"
+    # form.work_for.data = "fjisaofjsio"
+
+    # id = request.args.get('id', "", type=str)
+    # picsname = None
+    # if(id!=""):
+    #     manhua = Manhua.query.filter_by(id=id).first()
+    #     if(manhua.pic_url!=""and manhua.pic_url!=None):
+    #         picsname = manhua.pic_url.split('/')[-1]
+    #     picsname = urllib.unquote(str(picsname))
+    # else:
+    #     manhua = Manhua(id=None,mhname="",pic_base64data="",)
+    # return render_template('mhcontrol/backfrom.html',manhua=manhua,picsname=picsname)
+
     return render_template('tianwang/register.html', form=form)
 
+@tianwang.route('/policelist', methods=['GET', 'POST'])
+def policelist():
+    dt = datetime.today().strftime( '%Y-%m-%d' )
+    # 获取当前时间
+    now = datetime.now()
+    page = request.args.get('page', 1, type=int)
+    pagination = db.session.query(Policefor).order_by(Policefor.creat_time.desc()).paginate(
+        page, per_page=current_app.config['FLASKY_POSTS_PER_PAGE'],
+        error_out=False)
+    posts = pagination.items
+    listsize = pagination.total
+    return render_template('tianwang/policeforlist.html',posts=posts,pagination=pagination,listsize=listsize)
+
+
+# # 故障提交表单
+# @tianwang.route('/police_for',methods=['GET', 'POST'])
+# def police_for():
+#     id = request.args.get('id', "", type=str)
+#     wterror = Wterror.query.filter_by(id=id).first()
+#     watcher = Watcher.query.filter_by(id=wterror.watcher_id).first()
+#     return render_template('tianwang/register.html',wterror=wterror,watcher=watcher)
+
+
+
+# 天网信息记录
+# 提供两个类型的检索 IP 和 名称  172.22.180.10  自己处理可用IP段  设置一个附录表格 可用富文本  比如联系人电话 号码  杂事等
+@tianwang.route('/details', methods=['GET','POST'])
+def details():
+    # 检测是否带参数
+    ip_str = request.form.get('qu_name', "", type=str)
+    pagination_qu_name = request.args.get('qu_name', "", type=str)
+
+    position_name = request.form.get('position_name', "", type=str)
+    pagination_position_name = request.args.get('position_name', "", type=str)
+
+
+    cf = ConfigParser.ConfigParser()
+    cf.read("app/tianwang/IPdetail.config")
+    print cf
+    cityIP = cf.get("IP", "cityIP")
+    townIP = cf.get("IP", "townIP")
+
+    print pagination_position_name
+    # 存在搜索参数
+    if ip_str!="" or pagination_qu_name!="" or position_name!="" or pagination_position_name!="":
+        form = select_list()
+        if ip_str!="":
+            pagination_qu_name = ip_str
+        if position_name!="":
+            pagination_position_name = position_name
+
+        form.qu_name.data = pagination_qu_name
+        form.position_name.data = pagination_position_name
+        page = request.args.get('page', 1, type=int)
+        pagination = db.session.query(Ipdetails).filter(Ipdetails.del_type!=-1, Ipdetails.ip_str.like('%' + pagination_qu_name + '%'),Ipdetails.ip_position.like('%' + pagination_position_name + '%')).order_by(Ipdetails.ip_str.desc()).paginate(
+            page, per_page=current_app.config['FLASKY_POSTS_PER_PAGE'],
+            error_out=False)
+        posts = pagination.items
+        listsize = pagination.total
+
+        return render_template('tianwang/details.html',posts=posts,pagination=pagination,listsize=listsize,form=form,qu_name=pagination_qu_name,position_name=pagination_position_name,cityIP=cityIP,townIP=townIP)
+
+
+    page = request.args.get('page', 1, type=int)
+    pagination = db.session.query(Ipdetails).filter(Ipdetails.del_type!=-1).order_by(Ipdetails.ip_str.desc()).paginate(
+        page, per_page=current_app.config['FLASKY_POSTS_PER_PAGE'],
+        error_out=False)
+    posts = pagination.items
+    listsize = pagination.total
+
+    form = select_list()
+    return render_template('tianwang/details.html',posts=posts,pagination=pagination,listsize=listsize,form=form,cityIP=cityIP,townIP=townIP)
+
+
+@tianwang.route('/editip', methods=['GET', 'POST'])
+def editip():
+    form = IpFrom()
+
+    cf = ConfigParser.ConfigParser()
+    cf.read("app/tianwang/IPdetail.config")
+    cityIP = cf.get("IP", "cityIP")
+    townIP = cf.get("IP", "townIP")
+
+
+    if form.validate_on_submit():
+        cf.set("IP","cityIP",form.cityIP.data)
+        cf.set("IP","townIP",form.townIP.data)
+
+        with open("app/tianwang/IPdetail.config",'w') as fw:
+            cf.write(fw)
+            return redirect(url_for('tianwang.details'))
+
+    form.cityIP.data = cityIP
+    form.townIP.data = townIP
+    return render_template('tianwang/register.html', form=form)

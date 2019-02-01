@@ -180,6 +180,30 @@ class Policefor(db.Model):
     def __repr__(self):
         return '<policefor %r>' % self.id
 
+#  天网ip使用情况记录
+#  id 创建时间 ip ip使用地点描述 点位类型（球机 服务器 平台）
+class Ipdetails(db.Model):
+    __tablename__ = 'ipdetails'
+    id = db.Column(db.Integer, primary_key=True,autoincrement=True)
+    creat_time = db.Column(db.DATETIME)
+    ip_str = db.Column(db.String(255))
+    ip_position = db.Column(db.String(255))
+    ip_type = db.Column(db.String(64))
+    del_type = db.Column(db.VARCHAR(1))
+    def __repr__(self):
+        return '<ipdetails %r>' % self.id
+
+#  天网杂乱消息记录
+#  id 创建时间 ip ip使用地点描述 点位类型（球机 服务器 平台）
+class Infordetails(db.Model):
+    __tablename__ = 'infordetails'
+    id = db.Column(db.Integer, primary_key=True,autoincrement=True)
+    creat_time = db.Column(db.DATETIME)
+    information = db.Column(db.Text())
+    def __repr__(self):
+        return '<infordetails %r>' % self.id
+
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))

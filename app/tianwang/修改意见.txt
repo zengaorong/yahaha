@@ -14,6 +14,9 @@
 10.添加最后更新时间
 11. 重定向 页面 测试
 
+https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js
+https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css
+
 13:24:06
 
 {% include 'tianwang/_list.html' %}
